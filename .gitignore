@@ -1,0 +1,8 @@
+# compiled files
+/target
+target.zip
+# IntelliJ configuration folder
+/.idea
+# internal configuratrion
+configuration.env
+
