@@ -61,34 +61,37 @@ public class GuildMemberRemovedEventListener extends ListenerAdapter {
                     String reason = entry.getReason();
                     TextChannel channel = guild.getTextChannelById("1093558267382345778");
                     Objects.requireNonNull(channel);
+
+                    kickRepository.insert(userTriggeredEvent, kicker, reason, guild.getId());
+
                     channel.sendMessage("**" +
                             userTriggeredEvent.getName() +
                             "** (" + userTriggeredEvent.getId() + ") has been kicked from the server by " + kicker.getAsMention() +
                             ". Reason: " + reason).queue();
-
-                    kickRepository.insert(userTriggeredEvent, kicker, reason, guild.getId());
                 } else if (entry != null && entry.getType() == ActionType.BAN) {
 
                     User banner = entry.getUser();
                     String reason = entry.getReason();
                     TextChannel channel = guild.getTextChannelById("1093558651106631772");
                     Objects.requireNonNull(channel);
+
+                    banRepository.insert(userTriggeredEvent, banner, reason, guild.getId());
+
                     channel.sendMessage("**" +
                             userTriggeredEvent.getName() +
                             "** (" + userTriggeredEvent.getId() + ") has been banned from the server by " + banner.getAsMention() +
                             ". Reason: " + reason).queue();
-
-                    banRepository.insert(userTriggeredEvent, banner, reason, guild.getId());
                 } else {
 
                     TextChannel channel = guild.getTextChannelById("1093558615337615441");
                     Objects.requireNonNull(channel);
+
+                    leaveRepository.insert(userTriggeredEvent, guild.getId());
+
                     channel.sendMessage("**" +
                             userTriggeredEvent.getName() +
                             "** has left the server. " +
                             "User ID: **" + userTriggeredEvent.getId() + "**").queue();
-
-                    leaveRepository.insert(userTriggeredEvent, guild.getId());
                 }
             });
         }

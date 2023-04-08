@@ -45,6 +45,7 @@ public class GuildMemberRemoveToggle extends ListenerAdapter {
             return;
         }
 
+        event.deferReply().queue();
         OptionMapping option = Objects.requireNonNull(event.getOption("status"));
 
         if (option.getAsString().equalsIgnoreCase("disable") || option.getAsString().equalsIgnoreCase("enable")) {
