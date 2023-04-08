@@ -13,7 +13,12 @@ public class TriviaTriggerCommand extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
 
-        if (!event.getGuild().getId().equals("1092768978285367316") && !event.getName().equalsIgnoreCase("trivia-start")) {
+        if (!event.getName().equalsIgnoreCase("trivia-start")) {
+            return;
+        }
+
+        if (!event.getGuild().getId().equals("1092768978285367316")) {
+            event.reply("You don't have access to perform this action. Please contact a member that has <@&886273306028834816> role and ask for assistance.").setEphemeral(true).queue();
             return;
         }
 
