@@ -3,49 +3,41 @@ package com.mandarin.discord.command.status;
 import com.mandarin.discord.enums.GuildRole;
 import com.mandarin.discord.repository.CommandRepository;
 
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.mandarin.discord.config.GuildStartupConfiguration.SOFTUNI_PROGRAMMING_BASICS_GUILD_ID;
+import static com.mandarin.discord.service.MemberService.isMissingAppropriateRole;
+import static com.mandarin.discord.util.GuildAccessVerifier.verifyCommandAccess;
 
 public class GuildMemberRemoveToggle extends ListenerAdapter {
 
+    public static final String LOGGING_MEMBER_REMOVAL_COMMAND_NAME = "logging-member-removal";
     private final CommandRepository commandRepository;
 
     public GuildMemberRemoveToggle() {
+
         commandRepository = new CommandRepository();
     }
 
-    public static final String LOGGING_MEMBER_REMOVAL_COMMAND_NAME = "logging-member-removal";
-
     @Override
-    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
 
-        if (!event.getName().equalsIgnoreCase(LOGGING_MEMBER_REMOVAL_COMMAND_NAME)) {
-            return;
-        }
-        if (!event.getGuild().getId().equals(SOFTUNI_PROGRAMMING_BASICS_GUILD_ID)) {
-            event.reply("Not enable for your server!").setEphemeral(true).queue();
-            return;
-        }
+        boolean access = verifyCommandAccess(
+                event,
+                LOGGING_MEMBER_REMOVAL_COMMAND_NAME,
+                SOFTUNI_PROGRAMMING_BASICS_GUILD_ID,
+                List.of(GuildRole.EVENT_MANAGER, GuildRole.GLOBAL_MODERATOR));
 
-        boolean isMissingAppropriateRole = event.getMember()
-                .getRoles()
-                .stream()
-                .map(Role::getId)
-                .noneMatch(rid -> GuildRole.GLOBAL_MODERATOR.getRoleId().equals(rid) ||
-                        GuildRole.EVENT_MANAGER.getRoleId().equals(rid));
-
-        if (isMissingAppropriateRole) {
-            event.reply("You don't have access to perform this action. Please contact a member that has <@&886273306028834816> role and ask for assistance.").setEphemeral(true).queue();
+        if (!access) {
             return;
         }
 
-        event.deferReply().queue();
         OptionMapping option = Objects.requireNonNull(event.getOption("status"));
 
         if (option.getAsString().equalsIgnoreCase("disable") || option.getAsString().equalsIgnoreCase("enable")) {

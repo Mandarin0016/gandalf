@@ -5,4 +5,5 @@ target.zip
 /.idea
 # internal configuratrion
 configuration.env
+gandalf_update.ps1
 

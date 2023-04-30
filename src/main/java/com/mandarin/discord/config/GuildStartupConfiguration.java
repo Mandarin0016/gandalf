@@ -19,9 +19,17 @@ public class GuildStartupConfiguration extends ListenerAdapter {
     public void onGuildReady(GuildReadyEvent event) {
         List<CommandData> commandData = new ArrayList<>();
         commandData.add(Commands.slash("trivia-start", "Start a trivia challenge now!"));
-        SlashCommandData command = new CommandDataImpl("logging-member-removal", "enable/disable the logging for member removal event occurrence.");
-        command.addOption(OptionType.STRING, "status", "The status to move on.", true);
-        commandData.add(command);
+        SlashCommandData loggingMemberRemovalCommand = new CommandDataImpl("logging-member-removal", "Enable/Disable the logging for member removal event occurrence.");
+        loggingMemberRemovalCommand.addOption(OptionType.STRING, "status", "The status to move on.", true);
+        commandData.add(loggingMemberRemovalCommand);
+        SlashCommandData examNotifyCommand = new CommandDataImpl("exam-notify", "Notify the students about an upcoming exam and channel lockdown.");
+        commandData.add(examNotifyCommand);
+        SlashCommandData examInsertCommand = new CommandDataImpl("exam-insert", "Insert an upcoming exam.");
+        examInsertCommand.addOption(OptionType.STRING, "course", "The course that will perform the exam. Example: Programming Basics - 22 Април 2023", true);
+        examInsertCommand.addOption(OptionType.STRING, "start-date", "The first day of the exam, should be Saturday. Example: 2023-06-10", true);
+        examInsertCommand.addOption(OptionType.STRING, "end-date", "The end day of the exam, should be Sunday. Example: 2023-06-11", true);
+        commandData.add(examInsertCommand);
+        commandData.add(Commands.slash("exam-list", "List all valid upcoming Programming Basics exams."));
         event.getGuild().updateCommands().addCommands(commandData).queue();
     }
 }
