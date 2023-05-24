@@ -1,9 +1,6 @@
 package com.mandarin.discord.listener;
 
-import com.mandarin.discord.command.ExamInsertCommand;
-import com.mandarin.discord.command.ExamListCommand;
-import com.mandarin.discord.command.ExamNotificationCommand;
-import com.mandarin.discord.command.TriviaTriggerCommand;
+import com.mandarin.discord.command.*;
 import com.mandarin.discord.command.status.GuildMemberRemoveToggle;
 import com.mandarin.discord.config.GuildStartupConfiguration;
 import com.mandarin.discord.scheduler.ExamStatusScheduler;
@@ -24,6 +21,9 @@ public class EventListenerRegistry {
             new ExamInsertCommand(),
             new ExamNotificationCommand(),
             new ExamStatusScheduler(),
-            new ExamListCommand()
+            new ExamListCommand(),
+            new ChannelLockCommand(),
+            new ChannelUnlockCommand(),
+            new ChannelSyncCommand()
     );
 }

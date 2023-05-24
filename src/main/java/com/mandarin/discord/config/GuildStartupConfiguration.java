@@ -30,6 +30,12 @@ public class GuildStartupConfiguration extends ListenerAdapter {
         examInsertCommand.addOption(OptionType.STRING, "end-date", "The end day of the exam, should be Sunday. Example: 2023-06-11", true);
         commandData.add(examInsertCommand);
         commandData.add(Commands.slash("exam-list", "List all valid upcoming Programming Basics exams."));
+        SlashCommandData channelsLockCommand = new CommandDataImpl("lock", "Lock all channels to ensure the normal conduct of the exam.");
+        commandData.add(channelsLockCommand);
+        SlashCommandData channelsUnlockCommand = new CommandDataImpl("unlock", "Unlock all channels.");
+        commandData.add(channelsUnlockCommand);
+        SlashCommandData channelsSyncCommand = new CommandDataImpl("sync", "Sync all channels under every category.");
+        commandData.add(channelsSyncCommand);
         event.getGuild().updateCommands().addCommands(commandData).queue();
     }
 }
