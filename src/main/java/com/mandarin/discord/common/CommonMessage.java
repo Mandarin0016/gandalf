@@ -1,7 +1,7 @@
 package com.mandarin.discord.common;
 
 public class CommonMessage {
-    public static final String EXAM_NOTIFICATION = """
+    public static final String EXAM_NOTIFICATION_BASICS = """
             @everyone
             **ВАЖНО** %s
                         
@@ -14,4 +14,18 @@ public class CommonMessage {
             Благодарим и успех!
             *@SoftUni Discord Community* %s
             """;
+    public static final String EXAM_NOTIFICATION_FUNDAMENTALS = """
+            @everyone
+            **ВАЖНО** %s
+                        
+            Скъпи курсисти,
+                        
+            Искаме да ви напомним, че на (**%d %s**) ще се проведе изпит на курсистите от **%s**. С цел да се осигури нормалното протичане на изпита, **гласовите** и **текстовите** канали ще бъдат заключени от **09:00** часа на **%d %s** и ще бъдат отключени след **19:00** часа на същия ден. Призоваваме курсистите да се придържат към самостоятелно решаване на изпитните задачи. __**Преписването и подсказването са строго забранени.**__
+                        
+            Молим ви за отговорност и разбиране!
+                        
+            Благодарим и успех!
+            *@SoftUni Discord Community* %s
+            """;
 }
+

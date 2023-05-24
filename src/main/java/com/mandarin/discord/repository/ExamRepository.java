@@ -10,14 +10,14 @@ import java.util.List;
 
 public class ExamRepository {
 
-    public void insert(String courseName, LocalDate startDate, LocalDate endDate, boolean isFinished, String username) {
+    public void insert(String courseName, LocalDate startDate, LocalDate endDate, boolean isFinished, String username, String server) {
 
         try {
 
             Connection connection = JdbcConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement("""
-                    INSERT INTO gandalf.exam_information(`course`, `start_date`, `end_date`, `is_finished`, `user`)
-                    VALUES (?, ?, ?, ?, ?);
+                    INSERT INTO gandalf.exam_information(`course`, `start_date`, `end_date`, `is_finished`, `user`, `server`)
+                    VALUES (?, ?, ?, ?, ?, ?);
                     """);
 
             statement.setString(1, courseName);
@@ -25,6 +25,7 @@ public class ExamRepository {
             statement.setDate(3, Date.valueOf(endDate));
             statement.setBoolean(4, isFinished);
             statement.setString(5, username);
+            statement.setString(6, server);
 
             statement.executeUpdate();
 
@@ -34,7 +35,7 @@ public class ExamRepository {
         }
     }
 
-    public Exam findValidUpcomingExam() {
+    public Exam findValidUpcomingExam(String server) {
 
         Exam exam = null;
 
@@ -44,10 +45,12 @@ public class ExamRepository {
             PreparedStatement statement = connection.prepareStatement("""
                     SELECT *
                     FROM `gandalf`.`exam_information`
-                    WHERE `end_date` >= CURDATE() AND `is_finished` IS FALSE
+                    WHERE `end_date` >= CURDATE() AND `is_finished` IS FALSE AND `server` LIKE ?
                     ORDER BY `start_date`, `end_date`
                     LIMIT 1;
                         """);
+
+            statement.setString(1, server);
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -85,7 +88,7 @@ public class ExamRepository {
         }
     }
 
-    public List<Exam> findAllReady() {
+    public List<Exam> findAllReady(String server) {
 
         List<Exam> exams = new ArrayList<>();
 
@@ -95,9 +98,11 @@ public class ExamRepository {
             PreparedStatement statement = connection.prepareStatement("""
                     SELECT *
                     FROM `gandalf`.`exam_information`
-                    WHERE `is_finished` IS FALSE
+                    WHERE `is_finished` IS FALSE AND `server` LIKE ?
                     ORDER BY `start_date`, `end_date`;
                         """);
+
+            statement.setString(1, server);
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {

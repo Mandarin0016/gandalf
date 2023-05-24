@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.mandarin.discord.config.GuildStartupConfiguration.SOFTUNI_PROGRAMMING_BASICS_GUILD_ID;
-import static com.mandarin.discord.service.MemberService.isMissingAppropriateRole;
 import static com.mandarin.discord.util.GuildAccessVerifier.verifyCommandAccess;
 
 public class GuildMemberRemoveToggle extends ListenerAdapter {
@@ -31,8 +30,8 @@ public class GuildMemberRemoveToggle extends ListenerAdapter {
         boolean access = verifyCommandAccess(
                 event,
                 LOGGING_MEMBER_REMOVAL_COMMAND_NAME,
-                SOFTUNI_PROGRAMMING_BASICS_GUILD_ID,
-                List.of(GuildRole.EVENT_MANAGER, GuildRole.GLOBAL_MODERATOR));
+                List.of(SOFTUNI_PROGRAMMING_BASICS_GUILD_ID),
+                List.of(GuildRole.EVENT_MANAGER_BASICS, GuildRole.GLOBAL_MODERATOR_BASICS));
 
         if (!access) {
             return;

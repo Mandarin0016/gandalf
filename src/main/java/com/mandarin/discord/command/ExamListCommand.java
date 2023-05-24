@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 import static com.mandarin.discord.config.GuildStartupConfiguration.SOFTUNI_PROGRAMMING_BASICS_GUILD_ID;
+import static com.mandarin.discord.config.GuildStartupConfiguration.SOFTUNI_PROGRAMMING_FUNDAMENTALS_GUILD_ID;
 import static com.mandarin.discord.util.GuildAccessVerifier.verifyCommandAccess;
 
 public class ExamListCommand extends ListenerAdapter {
@@ -28,15 +29,21 @@ public class ExamListCommand extends ListenerAdapter {
         boolean access = verifyCommandAccess(
                 event,
                 EXAM_LIST_COMMAND_NAME,
-                SOFTUNI_PROGRAMMING_BASICS_GUILD_ID,
-                List.of(GuildRole.EVENT_MANAGER, GuildRole.GLOBAL_MODERATOR));
+                List.of(
+                        SOFTUNI_PROGRAMMING_BASICS_GUILD_ID,
+                        SOFTUNI_PROGRAMMING_FUNDAMENTALS_GUILD_ID),
+                List.of(
+                        GuildRole.EVENT_MANAGER_BASICS,
+                        GuildRole.GLOBAL_MODERATOR_BASICS,
+                        GuildRole.EVENT_MANAGER_FUNDAMENTALS,
+                        GuildRole.GLOBAL_MODERATOR_FUNDAMENTALS));
 
         if (!access) {
             return;
         }
 
         examRepository.updateExamStatus();
-        List<Exam> upcomingExams = examRepository.findAllReady();
+        List<Exam> upcomingExams = examRepository.findAllReady(findServerInitiator(event));
 
         StringBuilder sb = new StringBuilder();
         sb.append("These are the upcoming exams: ").append(System.lineSeparator());
@@ -56,5 +63,13 @@ public class ExamListCommand extends ListenerAdapter {
         }
 
         event.reply(sb.toString()).queue();
+    }
+    private String findServerInitiator(SlashCommandInteractionEvent event) {
+
+        if (event.getGuild().getId().equals(SOFTUNI_PROGRAMMING_BASICS_GUILD_ID)) {
+            return "BASICS";
+        } else {
+            return "FUNDAMENTALS";
+        }
     }
 }

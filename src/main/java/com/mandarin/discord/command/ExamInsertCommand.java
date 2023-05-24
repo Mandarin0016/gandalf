@@ -14,6 +14,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 import static com.mandarin.discord.config.GuildStartupConfiguration.SOFTUNI_PROGRAMMING_BASICS_GUILD_ID;
+import static com.mandarin.discord.config.GuildStartupConfiguration.SOFTUNI_PROGRAMMING_FUNDAMENTALS_GUILD_ID;
 import static com.mandarin.discord.util.GuildAccessVerifier.verifyCommandAccess;
 
 public class ExamInsertCommand extends ListenerAdapter {
@@ -25,14 +26,21 @@ public class ExamInsertCommand extends ListenerAdapter {
         this.examRepository = new ExamRepository();
     }
 
+
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
 
         boolean access = verifyCommandAccess(
                 event,
                 EXAM_INSERT_COMMAND_NAME,
-                SOFTUNI_PROGRAMMING_BASICS_GUILD_ID,
-                List.of(GuildRole.EVENT_MANAGER, GuildRole.GLOBAL_MODERATOR));
+                List.of(
+                        SOFTUNI_PROGRAMMING_BASICS_GUILD_ID,
+                        SOFTUNI_PROGRAMMING_FUNDAMENTALS_GUILD_ID),
+                List.of(
+                        GuildRole.EVENT_MANAGER_BASICS,
+                        GuildRole.GLOBAL_MODERATOR_BASICS,
+                        GuildRole.EVENT_MANAGER_FUNDAMENTALS,
+                        GuildRole.GLOBAL_MODERATOR_FUNDAMENTALS));
 
         if (!access) {
             return;
@@ -41,6 +49,7 @@ public class ExamInsertCommand extends ListenerAdapter {
         String courseName = Objects.requireNonNull(event.getOption("course")).getAsString();
         LocalDate startDate = null;
         LocalDate endDate = null;
+        String server = findServerInitiator(event);
 
         try {
             startDate = LocalDate.parse(Objects.requireNonNull(event.getOption("start-date")).getAsString());
@@ -70,14 +79,25 @@ public class ExamInsertCommand extends ListenerAdapter {
 
         String outputEndDate = ordinalEnd + " of " + formattedMonthEnd + " " + endDate.getYear();
 
-        examRepository.insert(courseName, startDate, endDate, isFinished, event.getUser().getName());
+        examRepository.insert(courseName, startDate, endDate, isFinished, event.getUser().getName(), server);
         event.reply(String.format("Exam was inserted: **%s**, starts on **%s** and ends on **%s**.", courseName, outputStartDate, outputEndDate)).queue();
     }
 
+    private String findServerInitiator(SlashCommandInteractionEvent event) {
+
+        if (event.getGuild().getId().equals(SOFTUNI_PROGRAMMING_BASICS_GUILD_ID)) {
+            return "BASICS";
+        } else {
+            return "FUNDAMENTALS";
+        }
+    }
+
     private static String getOrdinalSuffix(int dayOfMonth) {
+
         if (dayOfMonth >= 11 && dayOfMonth <= 13) {
             return dayOfMonth + "th";
         }
+
         switch (dayOfMonth % 10) {
             case 1:
                 return dayOfMonth + "st";
