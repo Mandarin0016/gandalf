@@ -10,12 +10,12 @@ import static com.mandarin.discord.service.MemberService.isMissingAppropriateRol
 
 public class GuildAccessVerifier {
 
-    public static boolean verifyCommandAccess(SlashCommandInteractionEvent event, String commandName, String guildId, List<GuildRole> rolesAllowed) {
+    public static boolean verifyCommandAccess(SlashCommandInteractionEvent event, String commandName, List<String> guildIds, List<GuildRole> rolesAllowed) {
 
         if (!event.getName().equalsIgnoreCase(commandName)) {
             return false;
         }
-        if (!Objects.requireNonNull(event.getGuild()).getId().equals(guildId)) {
+        if (!guildIds.contains(Objects.requireNonNull(event.getGuild()).getId())) {
             event.reply("Not enable for your server!").setEphemeral(true).queue();
             return false;
         }

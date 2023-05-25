@@ -27,8 +27,8 @@ public class ChannelLockCommand extends ListenerAdapter {
 
         boolean access = verifyCommandAccess(event,
                 CHANNEL_LOCK_COMMAND_NAME,
-                SOFTUNI_PROGRAMMING_BASICS_GUILD_ID,
-                List.of(GuildRole.EVENT_MANAGER, GuildRole.GLOBAL_MODERATOR));
+                List.of(SOFTUNI_PROGRAMMING_BASICS_GUILD_ID),
+                List.of(GuildRole.EVENT_MANAGER_BASICS, GuildRole.GLOBAL_MODERATOR_BASICS));
 
         if (!access) {
             return;

@@ -11,9 +11,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Objects;
 
-import static com.mandarin.discord.common.CommonMessage.EXAM_NOTIFICATION;
+import static com.mandarin.discord.common.CommonMessage.EXAM_NOTIFICATION_BASICS;
+import static com.mandarin.discord.common.CommonMessage.EXAM_NOTIFICATION_FUNDAMENTALS;
 import static com.mandarin.discord.config.GuildStartupConfiguration.SOFTUNI_PROGRAMMING_BASICS_GUILD_ID;
+import static com.mandarin.discord.config.GuildStartupConfiguration.SOFTUNI_PROGRAMMING_FUNDAMENTALS_GUILD_ID;
 import static com.mandarin.discord.util.GuildAccessVerifier.verifyCommandAccess;
+import static com.mandarin.discord.util.ServerInitiator.findAnnouncementChannelId;
+import static com.mandarin.discord.util.ServerInitiator.findServerInitiator;
 
 public class ExamNotificationCommand extends ListenerAdapter {
 
@@ -31,22 +35,44 @@ public class ExamNotificationCommand extends ListenerAdapter {
         boolean access = verifyCommandAccess(
                 event,
                 EXAM_NOTIFICATION_COMMAND_NAME,
-                SOFTUNI_PROGRAMMING_BASICS_GUILD_ID,
-                List.of(GuildRole.EVENT_MANAGER, GuildRole.GLOBAL_MODERATOR));
+                List.of(
+                        SOFTUNI_PROGRAMMING_BASICS_GUILD_ID,
+                        SOFTUNI_PROGRAMMING_FUNDAMENTALS_GUILD_ID),
+                List.of(
+                        GuildRole.EVENT_MANAGER_BASICS,
+                        GuildRole.GLOBAL_MODERATOR_BASICS,
+                        GuildRole.EVENT_MANAGER_FUNDAMENTALS,
+                        GuildRole.GLOBAL_MODERATOR_FUNDAMENTALS));
 
         if (!access) {
             return;
         }
 
         examRepository.updateExamStatus();
-        Exam upcomingExam = examRepository.findValidUpcomingExam();
+        String server = findServerInitiator(event);
+        Exam upcomingExam = examRepository.findValidUpcomingExam(server);
 
         String monthNameInBulgarian = getMonthNameInBulgarian(upcomingExam.getStartDate().getMonth().getValue());
 
         RichCustomEmoji softuniEmoji = event.getGuild().getEmojisByName("softuni", false).get(0);
         RichCustomEmoji alertEmoji = event.getGuild().getEmojisByName("alert", true).get(0);
 
-        String completeMessage = String.format(EXAM_NOTIFICATION,
+        String completeMessage;
+
+        if(server.equals("BASICS")) {
+            completeMessage = getBasicsMessage(upcomingExam, monthNameInBulgarian, softuniEmoji, alertEmoji);
+        } else {
+            completeMessage = getFundamentalsMessage(upcomingExam, monthNameInBulgarian, softuniEmoji, alertEmoji);
+        }
+
+
+        Objects.requireNonNull(event.getJDA().getTextChannelById(findAnnouncementChannelId(server))).sendMessage(completeMessage).queue();
+        event.reply(String.format("I've sent the message, please check <#%s> for it.", findAnnouncementChannelId(server))).queue();
+    }
+
+    private String getBasicsMessage(Exam upcomingExam, String monthNameInBulgarian, RichCustomEmoji softuniEmoji, RichCustomEmoji alertEmoji) {
+
+        return String.format(EXAM_NOTIFICATION_BASICS,
                 alertEmoji.getAsMention(),
                 upcomingExam.getStartDate().getDayOfMonth(),
                 upcomingExam.getEndDate().getDayOfMonth(),
@@ -58,12 +84,22 @@ public class ExamNotificationCommand extends ListenerAdapter {
                 monthNameInBulgarian,
                 softuniEmoji.getAsMention()
         );
+    }
+    private String getFundamentalsMessage(Exam upcomingExam, String monthNameInBulgarian, RichCustomEmoji softuniEmoji, RichCustomEmoji alertEmoji) {
 
-        Objects.requireNonNull(event.getJDA().getTextChannelById("886603663961907261")).sendMessage(completeMessage).queue();
-        event.reply("I've sent the message, please check <#886603663961907261> for it.").queue();
+        return String.format(EXAM_NOTIFICATION_FUNDAMENTALS,
+                alertEmoji.getAsMention(),
+                upcomingExam.getStartDate().getDayOfMonth(),
+                monthNameInBulgarian,
+                upcomingExam.getCourseName(),
+                upcomingExam.getStartDate().getDayOfMonth(),
+                monthNameInBulgarian,
+                softuniEmoji.getAsMention()
+        );
     }
 
     private String getMonthNameInBulgarian(int value) {
+
         return switch (value) {
             case 1 -> "Януари";
             case 2 -> "Февруари";
