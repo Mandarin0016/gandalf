@@ -16,6 +16,8 @@ import static com.mandarin.discord.common.CommonMessage.EXAM_NOTIFICATION_FUNDAM
 import static com.mandarin.discord.config.GuildStartupConfiguration.SOFTUNI_PROGRAMMING_BASICS_GUILD_ID;
 import static com.mandarin.discord.config.GuildStartupConfiguration.SOFTUNI_PROGRAMMING_FUNDAMENTALS_GUILD_ID;
 import static com.mandarin.discord.util.GuildAccessVerifier.verifyCommandAccess;
+import static com.mandarin.discord.util.ServerInitiator.findAnnouncementChannelId;
+import static com.mandarin.discord.util.ServerInitiator.findServerInitiator;
 
 public class ExamNotificationCommand extends ListenerAdapter {
 
@@ -96,15 +98,6 @@ public class ExamNotificationCommand extends ListenerAdapter {
         );
     }
 
-    private String findAnnouncementChannelId(String server) {
-
-        if (server.equals("BASICS")) {
-            return "886603663961907261";
-        } else {
-            return "954298971281580037";
-        }
-    }
-
     private String getMonthNameInBulgarian(int value) {
 
         return switch (value) {
@@ -121,14 +114,6 @@ public class ExamNotificationCommand extends ListenerAdapter {
             case 11 -> "Ноември";
             default -> "Декември";
         };
-    }
-    private String findServerInitiator(SlashCommandInteractionEvent event) {
-
-        if (event.getGuild().getId().equals(SOFTUNI_PROGRAMMING_BASICS_GUILD_ID)) {
-            return "BASICS";
-        } else {
-            return "FUNDAMENTALS";
-        }
     }
 
 }

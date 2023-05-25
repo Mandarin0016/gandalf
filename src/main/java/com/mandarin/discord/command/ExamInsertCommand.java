@@ -16,6 +16,7 @@ import java.util.Objects;
 import static com.mandarin.discord.config.GuildStartupConfiguration.SOFTUNI_PROGRAMMING_BASICS_GUILD_ID;
 import static com.mandarin.discord.config.GuildStartupConfiguration.SOFTUNI_PROGRAMMING_FUNDAMENTALS_GUILD_ID;
 import static com.mandarin.discord.util.GuildAccessVerifier.verifyCommandAccess;
+import static com.mandarin.discord.util.ServerInitiator.findServerInitiator;
 
 public class ExamInsertCommand extends ListenerAdapter {
 
@@ -81,15 +82,6 @@ public class ExamInsertCommand extends ListenerAdapter {
 
         examRepository.insert(courseName, startDate, endDate, isFinished, event.getUser().getName(), server);
         event.reply(String.format("Exam was inserted: **%s**, starts on **%s** and ends on **%s**.", courseName, outputStartDate, outputEndDate)).queue();
-    }
-
-    private String findServerInitiator(SlashCommandInteractionEvent event) {
-
-        if (event.getGuild().getId().equals(SOFTUNI_PROGRAMMING_BASICS_GUILD_ID)) {
-            return "BASICS";
-        } else {
-            return "FUNDAMENTALS";
-        }
     }
 
     private static String getOrdinalSuffix(int dayOfMonth) {

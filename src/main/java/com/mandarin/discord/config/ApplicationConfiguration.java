@@ -16,10 +16,22 @@ import static com.mandarin.discord.listener.EventListenerRegistry.EVENT_LISTENER
 public class ApplicationConfiguration {
 
     private static final Dotenv config = Dotenv.configure().filename("configuration.env").load();
+    private static boolean isProdLoaded;
     private static ShardManager shardManager;
 
     public static void buildDefaultApplicationConfig() {
-        String token = config.get("TOKEN");
+
+        String token;
+
+        if (System.getProperty("os.name").contains(config.get("LOCAL_MACHINE_INDICATOR"))) {
+
+            isProdLoaded = false;
+            token = config.get("TOKEN_WIP");
+        } else {
+
+            isProdLoaded = true;
+            token = config.get("TOKEN");
+        }
 
         DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(token);
         builder.setStatus(OnlineStatus.ONLINE);
@@ -33,7 +45,9 @@ public class ApplicationConfiguration {
         builder.setMemberCachePolicy(MemberCachePolicy.ALL);
         builder.setChunkingFilter(ChunkingFilter.ALL);
         builder.enableCache(CacheFlag.ONLINE_STATUS);
+
         shardManager = builder.build();
+
         loadEventListeners(shardManager);
     }
 
@@ -50,5 +64,9 @@ public class ApplicationConfiguration {
 
     public static Dotenv getDefaultInternalEnvConfig() {
         return config;
+    }
+
+    public static boolean isProdLoaded() {
+        return isProdLoaded;
     }
 }
