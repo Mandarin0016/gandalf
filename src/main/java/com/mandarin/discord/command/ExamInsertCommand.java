@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.TextStyle;
 import java.util.List;
@@ -53,10 +54,15 @@ public class ExamInsertCommand extends ListenerAdapter {
         String server = findServerInitiator(event);
 
         try {
-            startDate = LocalDate.parse(Objects.requireNonNull(event.getOption("start-date")).getAsString());
-            endDate = LocalDate.parse(Objects.requireNonNull(event.getOption("end-date")).getAsString());
+
+            String startDateAsString = Objects.requireNonNull(event.getOption("start-date")).getAsString();
+            String endDateAsString = Objects.requireNonNull(event.getOption("end-date")).getAsString();
+
+            startDate = LocalDate.parse(startDateAsString, DateTimeFormatter.ofPattern("dd-MM-uuuu"));
+            endDate = LocalDate.parse(endDateAsString, DateTimeFormatter.ofPattern("dd-MM-uuuu"));
+
         } catch (DateTimeParseException e) {
-            event.reply("**Oh!** It seems you are using incorrect date format. Both dates must be in the format **yyyy-MM-dd**. Example: 2023-12-25").queue();
+            event.reply("**Oh!** It seems you are using incorrect date format. Both dates must be in the format **dd-MM-yyyy**. Example: 25-12-2023").queue();
         }
 
         try {
@@ -90,16 +96,12 @@ public class ExamInsertCommand extends ListenerAdapter {
             return dayOfMonth + "th";
         }
 
-        switch (dayOfMonth % 10) {
-            case 1:
-                return dayOfMonth + "st";
-            case 2:
-                return dayOfMonth + "nd";
-            case 3:
-                return dayOfMonth + "rd";
-            default:
-                return dayOfMonth + "th";
-        }
+        return switch (dayOfMonth % 10) {
+            case 1 -> dayOfMonth + "st";
+            case 2 -> dayOfMonth + "nd";
+            case 3 -> dayOfMonth + "rd";
+            default -> dayOfMonth + "th";
+        };
     }
 
 }

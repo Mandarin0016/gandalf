@@ -27,10 +27,10 @@ public class GuildStartupConfiguration extends ListenerAdapter {
         commandData.add(examNotifyCommand);
         SlashCommandData examInsertCommand = new CommandDataImpl("exam-insert", "Insert an upcoming exam.");
         examInsertCommand.addOption(OptionType.STRING, "course", "The course that will perform the exam. Example: Programming Basics - 22 Април 2023", true);
-        examInsertCommand.addOption(OptionType.STRING, "start-date", "The first day of the exam, should be Saturday. Example: 2023-06-10", true);
-        examInsertCommand.addOption(OptionType.STRING, "end-date", "The end day of the exam, should be Sunday. Example: 2023-06-11", true);
+        examInsertCommand.addOption(OptionType.STRING, "start-date", "The first day of the exam, should be Saturday. Example: 10-06-2023", true);
+        examInsertCommand.addOption(OptionType.STRING, "end-date", "The end day of the exam, should be Sunday. Example: 11-06-2023", true);
         commandData.add(examInsertCommand);
-        commandData.add(Commands.slash("exam-list", "List all valid upcoming Programming Basics exams."));
+        commandData.add(Commands.slash("exam-list", "List all valid upcoming exams."));
         SlashCommandData channelsLockCommand = new CommandDataImpl("lock", "Lock all channels to ensure the normal conduct of the exam.");
         commandData.add(channelsLockCommand);
         SlashCommandData channelsUnlockCommand = new CommandDataImpl("unlock", "Unlock all channels.");

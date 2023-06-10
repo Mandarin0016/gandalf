@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.mandarin.discord.config.GuildStartupConfiguration.SOFTUNI_PROGRAMMING_BASICS_GUILD_ID;
@@ -53,9 +54,9 @@ public class ExamListCommand extends ListenerAdapter {
             sb.append("Course name: ")
                     .append(String.format("**%s**", upcomingExam.getCourseName()))
                     .append(" | Starts on ")
-                    .append(String.format("**%s**", upcomingExam.getStartDate().toString()))
+                    .append(String.format("**%s**", upcomingExam.getStartDate().format(DateTimeFormatter.ofPattern("dd-MM-uuuu"))))
                     .append(" | Ends on ")
-                    .append(String.format("**%s**", upcomingExam.getEndDate().toString()))
+                    .append(String.format("**%s**", upcomingExam.getEndDate().format(DateTimeFormatter.ofPattern("dd-MM-uuuu"))))
                     .append(".")
                     .append(" *(този изпит беше добавен от ")
                     .append(upcomingExam.getCreatorUsername())
