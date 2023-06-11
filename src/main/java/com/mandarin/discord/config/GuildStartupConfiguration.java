@@ -19,7 +19,10 @@ public class GuildStartupConfiguration extends ListenerAdapter {
     @Override
     public void onGuildReady(GuildReadyEvent event) {
         List<CommandData> commandData = new ArrayList<>();
-        commandData.add(Commands.slash("trivia-start", "Start a trivia challenge now!"));
+        SlashCommandData triviaStartCommand = new CommandDataImpl("trivia-start", "Start a trivia challenge now!");
+        triviaStartCommand.addOption(OptionType.STRING, "group", "The group to which you start the trivia for. Could be java, js, python or c#", true);
+        triviaStartCommand.addOption(OptionType.STRING, "complexity", "The complexity of the question: easy, normal or complex", true);
+        commandData.add(triviaStartCommand);
         SlashCommandData loggingMemberRemovalCommand = new CommandDataImpl("logging-member-removal", "Enable/Disable the logging for member removal event occurrence.");
         loggingMemberRemovalCommand.addOption(OptionType.STRING, "status", "The status to move on.", true);
         commandData.add(loggingMemberRemovalCommand);
