@@ -23,6 +23,8 @@ public class GuildStartupConfiguration extends ListenerAdapter {
         triviaStartCommand.addOption(OptionType.STRING, "group", "The group to which you start the trivia for. Could be java, js, python or c#", true);
         triviaStartCommand.addOption(OptionType.STRING, "complexity", "The complexity of the question: easy, normal or complex", true);
         commandData.add(triviaStartCommand);
+        SlashCommandData triviaMyPoints = new CommandDataImpl("my-points", "Check your points.");
+        commandData.add(triviaMyPoints);
         SlashCommandData loggingMemberRemovalCommand = new CommandDataImpl("logging-member-removal", "Enable/Disable the logging for member removal event occurrence.");
         loggingMemberRemovalCommand.addOption(OptionType.STRING, "status", "The status to move on.", true);
         commandData.add(loggingMemberRemovalCommand);

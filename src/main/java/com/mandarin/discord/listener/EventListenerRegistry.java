@@ -17,6 +17,7 @@ public class EventListenerRegistry {
             new GuildMemberRemovedEventListener(),
             //commands
             new TriviaTriggerCommand(),
+            new TriviaPointsCheckoutCommand(),
             new GuildMemberRemoveToggle(),
             new ExamInsertCommand(),
             new ExamNotificationCommand(),
