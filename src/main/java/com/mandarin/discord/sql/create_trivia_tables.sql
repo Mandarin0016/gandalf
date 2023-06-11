@@ -1,6 +1,6 @@
 create table `gandalf`.`trivia_answers`
 (
-    `button_id`      varchar(50)  not null,
+    `button_id`      varchar(100)  not null,
     `user_id`        varchar(100) not null,
     `points`         int          not null,
     `question_id`    varchar(50)  not null,
