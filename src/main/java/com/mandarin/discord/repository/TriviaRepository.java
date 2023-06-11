@@ -139,4 +139,28 @@ public class TriviaRepository {
             throw new RuntimeException(e);
         }
     }
+    public int getUserPoints(String userId) {
+        try {
+            Connection connection = JdbcConnection.getConnection();
+
+            PreparedStatement statement = connection.prepareStatement("""
+                    SELECT SUM(`points`) FROM gandalf.trivia_answers
+                    WHERE `user_id` = ?
+                      """);
+
+            statement.setString(1, userId);
+
+
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+
+            int pointsCount = resultSet.getInt(1);
+
+            connection.close();
+
+            return pointsCount;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
