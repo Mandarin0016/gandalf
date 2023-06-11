@@ -19,7 +19,10 @@ public class GuildStartupConfiguration extends ListenerAdapter {
     @Override
     public void onGuildReady(GuildReadyEvent event) {
         List<CommandData> commandData = new ArrayList<>();
-        commandData.add(Commands.slash("trivia-start", "Start a trivia challenge now!"));
+        SlashCommandData triviaStartCommand = new CommandDataImpl("trivia-start", "Start a trivia challenge now!");
+        triviaStartCommand.addOption(OptionType.STRING, "group", "The group to which you start the trivia for. Could be java, js, python or c#", true);
+        triviaStartCommand.addOption(OptionType.STRING, "complexity", "The complexity of the question: easy, normal or complex", true);
+        commandData.add(triviaStartCommand);
         SlashCommandData loggingMemberRemovalCommand = new CommandDataImpl("logging-member-removal", "Enable/Disable the logging for member removal event occurrence.");
         loggingMemberRemovalCommand.addOption(OptionType.STRING, "status", "The status to move on.", true);
         commandData.add(loggingMemberRemovalCommand);
@@ -27,10 +30,10 @@ public class GuildStartupConfiguration extends ListenerAdapter {
         commandData.add(examNotifyCommand);
         SlashCommandData examInsertCommand = new CommandDataImpl("exam-insert", "Insert an upcoming exam.");
         examInsertCommand.addOption(OptionType.STRING, "course", "The course that will perform the exam. Example: Programming Basics - 22 Април 2023", true);
-        examInsertCommand.addOption(OptionType.STRING, "start-date", "The first day of the exam, should be Saturday. Example: 2023-06-10", true);
-        examInsertCommand.addOption(OptionType.STRING, "end-date", "The end day of the exam, should be Sunday. Example: 2023-06-11", true);
+        examInsertCommand.addOption(OptionType.STRING, "start-date", "The first day of the exam, should be Saturday. Example: 10-06-2023", true);
+        examInsertCommand.addOption(OptionType.STRING, "end-date", "The end day of the exam, should be Sunday. Example: 11-06-2023", true);
         commandData.add(examInsertCommand);
-        commandData.add(Commands.slash("exam-list", "List all valid upcoming Programming Basics exams."));
+        commandData.add(Commands.slash("exam-list", "List all valid upcoming exams."));
         SlashCommandData channelsLockCommand = new CommandDataImpl("lock", "Lock all channels to ensure the normal conduct of the exam.");
         commandData.add(channelsLockCommand);
         SlashCommandData channelsUnlockCommand = new CommandDataImpl("unlock", "Unlock all channels.");
