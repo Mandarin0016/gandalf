@@ -6,7 +6,6 @@ import com.mandarin.discord.entity.TriviaQuestion;
 
 import java.sql.*;
 import java.time.Instant;
-import java.util.Optional;
 import java.util.UUID;
 
 public class TriviaRepository {
@@ -130,7 +129,7 @@ public class TriviaRepository {
             statement.setString(4, buttonId.split("\\$")[0]);
             statement.setBoolean(5, correctness);
             statement.setString(6, userAnswer);
-            statement.setString(7, buttonId.split("\\$")[2]);
+            statement.setString(7, buttonId.split("\\$")[3]);
             statement.setTimestamp(8, Timestamp.from(Instant.now()));
 
             statement.executeUpdate();

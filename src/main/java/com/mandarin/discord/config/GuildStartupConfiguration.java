@@ -15,6 +15,7 @@ public class GuildStartupConfiguration extends ListenerAdapter {
 
     public static String SOFTUNI_PROGRAMMING_BASICS_GUILD_ID = "886268434004983808";
     public static String SOFTUNI_PROGRAMMING_FUNDAMENTALS_GUILD_ID = "954298970799243285";
+    public static String TRIVIA_TEST_GUILD_ID = "1092768978285367316";
 
     @Override
     public void onGuildReady(GuildReadyEvent event) {

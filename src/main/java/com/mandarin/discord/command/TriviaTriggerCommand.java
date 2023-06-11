@@ -2,6 +2,7 @@ package com.mandarin.discord.command;
 
 import com.mandarin.discord.entity.TriviaAnswer;
 import com.mandarin.discord.entity.TriviaQuestion;
+import com.mandarin.discord.enums.GuildRole;
 import com.mandarin.discord.repository.TriviaRepository;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -13,10 +14,13 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 import java.awt.*;
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
-import static com.mandarin.discord.config.GuildStartupConfiguration.SOFTUNI_PROGRAMMING_BASICS_GUILD_ID;
+import static com.mandarin.discord.config.GuildStartupConfiguration.*;
+import static com.mandarin.discord.util.ButtonIdentifier.TRIVIA_ANSWER_BUTTON;
+import static com.mandarin.discord.util.GuildAccessVerifier.verifyButtonAccessToEventListener;
+import static com.mandarin.discord.util.GuildAccessVerifier.verifyCommandAccess;
 
 public class TriviaTriggerCommand extends ListenerAdapter {
 
@@ -38,8 +42,21 @@ public class TriviaTriggerCommand extends ListenerAdapter {
             return;
         }
 
-        if (!event.getGuild().getId().equals("1092768978285367316")) {
-            event.reply("You don't have access to perform this action. Please contact a member that has <@&886273306028834816> role and ask for assistance.").setEphemeral(true).queue();
+        boolean access = verifyCommandAccess(
+                event,
+                TRIVIA_START_COMMAND_NAME,
+                java.util.List.of(
+                        SOFTUNI_PROGRAMMING_BASICS_GUILD_ID,
+                        SOFTUNI_PROGRAMMING_FUNDAMENTALS_GUILD_ID,
+                        TRIVIA_TEST_GUILD_ID),
+                List.of(
+                        GuildRole.EVENT_MANAGER_BASICS,
+                        GuildRole.GLOBAL_MODERATOR_BASICS,
+                        GuildRole.EVENT_MANAGER_FUNDAMENTALS,
+                        GuildRole.GLOBAL_MODERATOR_FUNDAMENTALS,
+                        GuildRole.TESTER_TRIVIA_SERVER_ROLE));
+
+        if (!access) {
             return;
         }
 
@@ -49,7 +66,7 @@ public class TriviaTriggerCommand extends ListenerAdapter {
         String complexity = Objects.requireNonNull(event.getOption("complexity")).getAsString().toUpperCase();
 
         if (!isValidGroup(group) || !isValidComplexity(complexity)) {
-            event.reply("Invalid data provided! Check carefully the group and the complexity").setEphemeral(true).queue();
+            event.reply("Invalid data provided! Check carefully the group and the complexity!").setEphemeral(true).queue();
             return;
         }
 
@@ -64,31 +81,30 @@ public class TriviaTriggerCommand extends ListenerAdapter {
         builder.addField("Б:", triviaQuestion.getAnswerB(), false);
         builder.addField("В:", triviaQuestion.getAnswerC(), false);
         builder.addField("Г:", triviaQuestion.getAnswerD(), false);
-        builder.setFooter("Група: " + triviaQuestion.getGroup() + " | Сложност: " + findComplexityString(triviaQuestion.getComplexity()), findFooterIcon(group));
+        builder.setFooter("Група: " + triviaQuestion.getGroup() + " | Сложност: " + findComplexityDisplayName(triviaQuestion.getComplexity()), findFooterIcon(group));
         builder.setTimestamp(Instant.now());
 
         MessageEmbed embed = builder.build();
 
-        Button buttonA = Button.success(triviaQuestion.getId().toString() + "$A$" + triviaQuestion.getCorrectAnswer() + "$" + triviaQuestion.getPoints(), "A");
-        Button buttonB = Button.success(triviaQuestion.getId().toString() + "$B$" + triviaQuestion.getCorrectAnswer() + "$" + triviaQuestion.getPoints(), "Б");
-        Button buttonC = Button.success(triviaQuestion.getId().toString() + "$C$" + triviaQuestion.getCorrectAnswer() + "$" + triviaQuestion.getPoints(), "В");
-        Button buttonD = Button.success(triviaQuestion.getId().toString() + "$D$" + triviaQuestion.getCorrectAnswer() + "$" + triviaQuestion.getPoints(), "Г");
+        Button buttonA = Button.success(triviaQuestion.getId().toString() + "$" + TRIVIA_ANSWER_BUTTON + "$" + "A$" + triviaQuestion.getCorrectAnswer() + "$" + triviaQuestion.getPoints(), "A");
+        Button buttonB = Button.success(triviaQuestion.getId().toString() + "$" + TRIVIA_ANSWER_BUTTON + "$" + "B$" + triviaQuestion.getCorrectAnswer() + "$" + triviaQuestion.getPoints(), "Б");
+        Button buttonC = Button.success(triviaQuestion.getId().toString() + "$" + TRIVIA_ANSWER_BUTTON + "$" + "C$" + triviaQuestion.getCorrectAnswer() + "$" + triviaQuestion.getPoints(), "В");
+        Button buttonD = Button.success(triviaQuestion.getId().toString() + "$" + TRIVIA_ANSWER_BUTTON + "$" + "D$" + triviaQuestion.getCorrectAnswer() + "$" + triviaQuestion.getPoints(), "Г");
 
-        guild.getTextChannelById("1093637377307713636")
+        guild.getTextChannelById(findAppropriateChannel(guild.getId(), event.getOption("group").getAsString()))
                 .sendMessageEmbeds(embed)
                 .setActionRow(buttonA, buttonB, buttonC, buttonD)
                 .queue();
-
-//        guild.getTextChannelById(findAppropriateChannel(guild.getId(), event.getOption("group").getAsString()))
-//                .sendMessageEmbeds(embed)
-//                .setActionRow(buttonA, buttonB, buttonC, buttonD)
-//                .queue();
 
         event.reply("Trivia has started!").setEphemeral(true).queue();
     }
 
     @Override
     public void onButtonInteraction(ButtonInteractionEvent event) {
+
+        if (!verifyButtonAccessToEventListener(event, TRIVIA_ANSWER_BUTTON)) {
+            return;
+        }
 
         String buttonId = event.getButton().getId();
         String userId = event.getMember().getId();
@@ -101,8 +117,8 @@ public class TriviaTriggerCommand extends ListenerAdapter {
         }
 
         String buttonLabel = event.getButton().getLabel().toLowerCase();
-        String correctAnswer = buttonId.split("\\$")[2];
-        int points = Integer.parseInt(buttonId.split("\\$")[3]);
+        String correctAnswer = buttonId.split("\\$")[3];
+        int points = Integer.parseInt(buttonId.split("\\$")[4]);
 
         if (buttonLabel.equalsIgnoreCase(correctAnswer)) {
             triviaRepository.insertAnswer(userId, buttonId, buttonLabel, true, points);
@@ -161,13 +177,18 @@ public class TriviaTriggerCommand extends ListenerAdapter {
                 case JS_GROUP -> "938173738418073692";
                 default -> "";
             };
+        } else if (TRIVIA_TEST_GUILD_ID.equals(id)) {
+
+            // test channel in test trivia server
+            return "1093637377307713636";
         } else {
-            //it only supports Programming Basics for now
+
+            //it only supports Programming Basics and test trivia server for now
             return SOFTUNI_PROGRAMMING_BASICS_GUILD_ID;
         }
     }
 
-    private String findComplexityString(TriviaQuestion.Complexity complexity) {
+    private String findComplexityDisplayName(TriviaQuestion.Complexity complexity) {
 
         return switch (complexity) {
             case EASY -> "Лесна";
