@@ -7,5 +7,4 @@ target.zip
 configuration.env
 gandalf_update.ps1
 
-trivia/src/main/java/com/mandarin/discord/json
 /src/main/java/com/mandarin/discord/json/
