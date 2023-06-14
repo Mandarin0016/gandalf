@@ -11,6 +11,8 @@ import net.dv8tion.jda.internal.interactions.CommandDataImpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mandarin.discord.config.ApplicationConfiguration.isProdLoaded;
+
 public class GuildStartupConfiguration extends ListenerAdapter {
 
     public static String SOFTUNI_PROGRAMMING_BASICS_GUILD_ID = "886268434004983808";
@@ -20,12 +22,19 @@ public class GuildStartupConfiguration extends ListenerAdapter {
     @Override
     public void onGuildReady(GuildReadyEvent event) {
         List<CommandData> commandData = new ArrayList<>();
+        SlashCommandData triviaRankList = new CommandDataImpl("rank-list", "Retrieve rank-list with the given flag: global, java, c#, python, js");
+        triviaRankList.addOption(OptionType.STRING, "flag", "global, java, c#, python, js", true);
         SlashCommandData triviaStartCommand = new CommandDataImpl("trivia-start", "Start a trivia challenge now!");
         triviaStartCommand.addOption(OptionType.STRING, "group", "The group to which you start the trivia for. Could be java, js, python or c#", true);
-        triviaStartCommand.addOption(OptionType.STRING, "complexity", "The complexity of the question: easy, normal or complex", true);
+        triviaStartCommand.addOption(OptionType.STRING, "complexity", "The complexity of the question: easy, normal or hard", true);
         commandData.add(triviaStartCommand);
-        SlashCommandData triviaMyPoints = new CommandDataImpl("my-points", "Check your points.");
-        commandData.add(triviaMyPoints);
+        commandData.add(triviaRankList);
+        if (isProdLoaded()) {
+            SlashCommandData triviaMyPoints = new CommandDataImpl("points", "Check your trivia points.");
+            commandData.add(triviaMyPoints);
+        }
+        SlashCommandData jsonRead = new CommandDataImpl("json-read", "Only for internal use.");
+        commandData.add(jsonRead);
         SlashCommandData loggingMemberRemovalCommand = new CommandDataImpl("logging-member-removal", "Enable/Disable the logging for member removal event occurrence.");
         loggingMemberRemovalCommand.addOption(OptionType.STRING, "status", "The status to move on.", true);
         commandData.add(loggingMemberRemovalCommand);

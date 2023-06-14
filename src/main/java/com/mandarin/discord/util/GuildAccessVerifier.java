@@ -22,10 +22,10 @@ public class GuildAccessVerifier {
             return false;
         }
 
-        if (isMissingAppropriateRole(Objects.requireNonNull(event.getMember()), rolesAllowed)) {
-            event.reply("You don't have access to perform this action. Please contact a member that has **admin/moderator** role and ask for assistance.").setEphemeral(true).queue();
-            return false;
-        }
+            if (!rolesAllowed.isEmpty() && isMissingAppropriateRole(Objects.requireNonNull(event.getMember()), rolesAllowed)) {
+                event.reply("You don't have access to perform this action. Please contact a member that has **admin/moderator** role and ask for assistance.").setEphemeral(true).queue();
+                return false;
+            }
 
         return true;
     }

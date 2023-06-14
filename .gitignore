@@ -7,3 +7,4 @@ target.zip
 configuration.env
 gandalf_update.ps1
 
+src/main/java/com/mandarin/discord/json

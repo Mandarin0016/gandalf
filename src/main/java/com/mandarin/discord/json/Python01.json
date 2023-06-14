@@ -1,0 +1,1292 @@
+[
+  {
+    "question": "What is Python?",
+    "options": {
+      "a": "A programming language",
+      "b": "A snake",
+      "c": "A type of computer",
+      "d": "A food item"
+    },
+    "correct_answer": "a",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the syntax to print 'Hello, World!' in Python?",
+    "options": {
+      "a": "print('Hello, World!')",
+      "b": "console.log('Hello, World!')",
+      "c": "System.out.println('Hello, World!')",
+      "d": "echo 'Hello, World!'"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code snippet?\n\nx = [1, 2, 3]\nprint(x[3])",
+    "options": {
+      "a": "1",
+      "b": "2",
+      "c": "3",
+      "d": "IndexError"
+    },
+    "correct_answer": "d",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the purpose of the 'if' statement in Python?",
+    "options": {
+      "a": "To execute a block of code if a condition is true",
+      "b": "To define a function",
+      "c": "To create a loop",
+      "d": "To import modules"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which of the following data types is mutable in Python?",
+    "options": {
+      "a": "String",
+      "b": "Tuple",
+      "c": "List",
+      "d": "Dictionary"
+    },
+    "correct_answer": "c",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the result of the following code?\n\nx = 5\ny = 2\nresult = x % y",
+    "options": {
+      "a": "1",
+      "b": "2",
+      "c": "2.5",
+      "d": "0"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which statement is used to exit a loop in Python?",
+    "options": {
+      "a": "continue",
+      "b": "break",
+      "c": "return",
+      "d": "pass"
+    },
+    "correct_answer": "b",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the purpose of the 'range()' function in Python?",
+    "options": {
+      "a": "To generate a sequence of numbers",
+      "b": "To check if two objects are equal",
+      "c": "To reverse a string",
+      "d": "To get the length of a list"
+    },
+    "correct_answer": "a",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which module in Python is used for working with dates and times?",
+    "options": {
+      "a": "datetime",
+      "b": "time",
+      "c": "calendar",
+      "d": "math"
+    },
+    "correct_answer": "a",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code snippet?\n\nx = 'Hello'\nprint(x[-1])",
+    "options": {
+      "a": "H",
+      "b": "o",
+      "c": "e",
+      "d": "l"
+    },
+    "correct_answer": "b",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which keyword is used for defining a function in Python?",
+    "options": {
+      "a": "def",
+      "b": "function",
+      "c": "define",
+      "d": "fun"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code?\n\nx = [1, 2, 3]\ny = x\nx.append(4)\nprint(y)",
+    "options": {
+      "a": "[1, 2, 3]",
+      "b": "[1, 2, 3, 4]",
+      "c": "[4, 3, 2, 1]",
+      "d": "[4, 3, 2, 1, 4]"
+    },
+    "correct_answer": "b",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the purpose of the 'elif' statement in Python?",
+    "options": {
+      "a": "To execute a block of code if the preceding 'if' statement is true",
+      "b": "To handle multiple exceptions in exception handling",
+      "c": "To execute a block of code if none of the preceding conditions are true",
+      "d": "To define a class"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What does the 'self' parameter represent in a Python class method?",
+    "options": {
+      "a": "The object itself",
+      "b": "The class itself",
+      "c": "The parent class",
+      "d": "The child class"
+    },
+    "correct_answer": "a",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which of the following is used to create a copy of a list in Python?",
+    "options": {
+      "a": "copy()",
+      "b": "clone()",
+      "c": "duplicate()",
+      "d": "copylist()"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code snippet?\n\nx = 'Python'\nprint(x[1:4])",
+    "options": {
+      "a": "Pyt",
+      "b": "ytho",
+      "c": "yth",
+      "d": "yth"
+    },
+    "correct_answer": "b",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which of the following is NOT a Python built-in data type?",
+    "options": {
+      "a": "List",
+      "b": "Tuple",
+      "c": "Set",
+      "d": "StringArray"
+    },
+    "correct_answer": "d",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the purpose of the 'try' and 'except' statements in Python?",
+    "options": {
+      "a": "To handle exceptions and errors",
+      "b": "To define a class",
+      "c": "To create a loop",
+      "d": "To import modules"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code snippet?\n\nx = [1, 2, 3]\nx.remove(2)\nprint(x)",
+    "options": {
+      "a": "[1, 2, 3]",
+      "b": "[1, 2]",
+      "c": "[1, 3]",
+      "d": "[2, 3]"
+    },
+    "correct_answer": "c",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the purpose of the 'import' statement in Python?",
+    "options": {
+      "a": "To include a module/library in the current Python program",
+      "b": "To print output to the console",
+      "c": "To define a function",
+      "d": "To create a loop"
+    },
+    "correct_answer": "a",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code snippet?\n\nx = 2**3**2\nprint(x)",
+    "options": {
+      "a": "4",
+      "b": "8",
+      "c": "16",
+      "d": "64"
+    },
+    "correct_answer": "d",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which operator is used for exponentiation in Python?",
+    "options": {
+      "a": "**",
+      "b": "//",
+      "c": "%",
+      "d": "^"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code?\n\nx = [1, 2, 3]\nprint(len(x))",
+    "options": {
+      "a": "0",
+      "b": "1",
+      "c": "2",
+      "d": "3"
+    },
+    "correct_answer": "d",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the purpose of the 'while' loop in Python?",
+    "options": {
+      "a": "To execute a block of code repeatedly as long as a condition is true",
+      "b": "To execute a block of code for a specific number of times",
+      "c": "To define a class",
+      "d": "To handle exceptions and errors"
+    },
+    "correct_answer": "a",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code snippet?\n\nx = 10\ny = 5\nif x > y:\n    print('x is greater than y')",
+    "options": {
+      "a": "x is greater than y",
+      "b": "x",
+      "c": "y",
+      "d": "No output"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which of the following is used to get user input in Python?",
+    "options": {
+      "a": "input()",
+      "b": "get()",
+      "c": "read()",
+      "d": "scan()"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code snippet?\n\nx = [1, 2, 3]\nx.append([4, 5])\nprint(x)",
+    "options": {
+      "a": "[1, 2, 3]",
+      "b": "[1, 2, 3, [4, 5]]",
+      "c": "[1, 2, 3, 4, 5]",
+      "d": "[1, 2, 3, 5, 4]"
+    },
+    "correct_answer": "b",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the purpose of the 'in' operator in Python?",
+    "options": {
+      "a": "To check if an element is present in a sequence",
+      "b": "To check if two objects are equal",
+      "c": "To reverse a string",
+      "d": "To get the length of a list"
+    },
+    "correct_answer": "a",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code?\n\nx = (1, 2, 3)\nprint(x[0])",
+    "options": {
+      "a": "1",
+      "b": "2",
+      "c": "3",
+      "d": "TypeError"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which method is used to remove an item from a Python dictionary?",
+    "options": {
+      "a": "remove()",
+      "b": "delete()",
+      "c": "pop()",
+      "d": "discard()"
+    },
+    "correct_answer": "c",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the purpose of the 'for' loop in Python?",
+    "options": {
+      "a": "To iterate over a sequence or collection of items",
+      "b": "To execute a block of code repeatedly as long as a condition is true",
+      "c": "To define a class",
+      "d": "To handle exceptions and errors"
+    },
+    "correct_answer": "a",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code snippet?\n\nx = 10\ny = 5\nif x > y:\n    print('x is greater than y')\nelse:\n    print('x is not greater than y')",
+    "options": {
+      "a": "x is greater than y",
+      "b": "x is not greater than y",
+      "c": "x",
+      "d": "y"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which of the following is used to format strings in Python?",
+    "options": {
+      "a": "format()",
+      "b": "concat()",
+      "c": "combine()",
+      "d": "append()"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code snippet?\n\nx = [1, 2, 3]\ny = x\ndel x\nprint(y)",
+    "options": {
+      "a": "[1, 2, 3]",
+      "b": "[]",
+      "c": "NameError",
+      "d": "TypeError"
+    },
+    "correct_answer": "a",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the purpose of the 'else' statement in Python?",
+    "options": {
+      "a": "To execute a block of code if none of the preceding conditions are true",
+      "b": "To handle multiple exceptions in exception handling",
+      "c": "To execute a block of code repeatedly as long as a condition is true",
+      "d": "To define a class"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which of the following is used to convert a string to uppercase in Python?",
+    "options": {
+      "a": "upper()",
+      "b": "capitalize()",
+      "c": "lower()",
+      "d": "title()"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code?\n\nx = (1, 2, 3)\nprint(len(x))",
+    "options": {
+      "a": "0",
+      "b": "1",
+      "c": "2",
+      "d": "3"
+    },
+    "correct_answer": "d",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which method is used to add an item to a Python list?",
+    "options": {
+      "a": "add()",
+      "b": "insert()",
+      "c": "append()",
+      "d": "extend()"
+    },
+    "correct_answer": "c",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the purpose of the 'pass' statement in Python?",
+    "options": {
+      "a": "To indicate an empty block of code",
+      "b": "To handle exceptions and errors",
+      "c": "To import modules",
+      "d": "To define a class"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code snippet?\n\nx = 'Python'\nprint(x[::-1])",
+    "options": {
+      "a": "Python",
+      "b": "nohtyP",
+      "c": "nhoP",
+      "d": "Pyt"
+    },
+    "correct_answer": "b",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which module in Python is used for working with dates and times?",
+    "options": {
+      "a": "datetime",
+      "b": "time",
+      "c": "calendar",
+      "d": "math"
+    },
+    "correct_answer": "a",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code snippet?\n\nx = 'Hello'\nprint(x[-1])",
+    "options": {
+      "a": "H",
+      "b": "o",
+      "c": "e",
+      "d": "l"
+    },
+    "correct_answer": "b",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which keyword is used for defining a function in Python?",
+    "options": {
+      "a": "def",
+      "b": "function",
+      "c": "define",
+      "d": "fun"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code?\n\nx = [1, 2, 3]\ny = x\nx.append(4)\nprint(y)",
+    "options": {
+      "a": "[1, 2, 3]",
+      "b": "[1, 2, 3, 4]",
+      "c": "[4, 3, 2, 1]",
+      "d": "[4, 3, 2, 1, 4]"
+    },
+    "correct_answer": "b",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the purpose of the 'elif' statement in Python?",
+    "options": {
+      "a": "To execute a block of code if the preceding 'if' statement is true",
+      "b": "To handle multiple exceptions in exception handling",
+      "c": "To execute a block of code if none of the preceding conditions are true",
+      "d": "To define a class"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What does the 'self' parameter represent in a Python class method?",
+    "options": {
+      "a": "The object itself",
+      "b": "The class itself",
+      "c": "The parent class",
+      "d": "The child class"
+    },
+    "correct_answer": "a",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code?\n\nx = [1, 2, 3]\nprint(x[3])",
+    "options": {
+      "a": "1",
+      "b": "2",
+      "c": "3",
+      "d": "IndexError"
+    },
+    "correct_answer": "d",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which method is used to remove the last item from a Python list?",
+    "options": {
+      "a": "remove()",
+      "b": "pop()",
+      "c": "delete()",
+      "d": "clear()"
+    },
+    "correct_answer": "b",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the purpose of the 'finally' statement in Python exception handling?",
+    "options": {
+      "a": "To execute a block of code regardless of whether an exception occurs or not",
+      "b": "To handle exceptions and errors",
+      "c": "To execute a block of code repeatedly as long as a condition is true",
+      "d": "To define a class"
+    },
+    "correct_answer": "a",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code snippet?\n\nx = [1, 2, 3]\nx.extend([4, 5])\nprint(x)",
+    "options": {
+      "a": "[1, 2, 3]",
+      "b": "[1, 2, 3, [4, 5]]",
+      "c": "[1, 2, 3, 4, 5]",
+      "d": "[1, 2, 3, 5, 4]"
+    },
+    "correct_answer": "c",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the purpose of the 'break' statement in a loop in Python?",
+    "options": {
+      "a": "To exit the loop prematurely",
+      "b": "To skip the current iteration and continue with the next iteration",
+      "c": "To indicate an empty block of code",
+      "d": "To define a class"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code?\n\nx = 'Hello'\nprint(x[1:3])",
+    "options": {
+      "a": "H",
+      "b": "e",
+      "c": "el",
+      "d": "ell"
+    },
+    "correct_answer": "c",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which module in Python is used for mathematical operations?",
+    "options": {
+      "a": "math",
+      "b": "cmath",
+      "c": "maths",
+      "d": "calc"
+    },
+    "correct_answer": "a",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code?\n\nx = 'Hello'\nprint(x[-2:])",
+    "options": {
+      "a": "H",
+      "b": "o",
+      "c": "lo",
+      "d": "llo"
+    },
+    "correct_answer": "c",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which keyword is used to exit from a loop in Python?",
+    "options": {
+      "a": "break",
+      "b": "exit",
+      "c": "stop",
+      "d": "quit"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the purpose of the 'super()' function in Python?",
+    "options": {
+      "a": "To call a method from the parent class",
+      "b": "To create a new instance of a class",
+      "c": "To convert a string to uppercase",
+      "d": "To define a class"
+    },
+    "correct_answer": "a",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What does the 'import' keyword do in Python?",
+    "options": {
+      "a": "It allows you to access modules and their functions",
+      "b": "It defines a new class",
+      "c": "It executes a block of code repeatedly as long as a condition is true",
+      "d": "It handles exceptions and errors"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code snippet?\n\nx = 10\ny = 5\nif x > y:\n    print('x is greater than y')\nelse:\n    print('x is not greater than y')",
+    "options": {
+      "a": "x is greater than y",
+      "b": "x is not greater than y",
+      "c": "x",
+      "d": "y"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which of the following is used to get user input in Python?",
+    "options": {
+      "a": "input()",
+      "b": "get()",
+      "c": "read()",
+      "d": "scan()"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code?\n\nx = [1, 2, 3]\ny = x\nx.append(4)\nprint(y)",
+    "options": {
+      "a": "[1, 2, 3]",
+      "b": "[1, 2, 3, 4]",
+      "c": "[4, 3, 2, 1]",
+      "d": "[4, 3, 2, 1, 4]"
+    },
+    "correct_answer": "b",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the purpose of the 'else' statement in Python?",
+    "options": {
+      "a": "To execute a block of code if none of the preceding conditions are true",
+      "b": "To handle multiple exceptions in exception handling",
+      "c": "To execute a block of code repeatedly as long as a condition is true",
+      "d": "To define a class"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which of the following is used to convert a string to uppercase in Python?",
+    "options": {
+      "a": "upper()",
+      "b": "capitalize()",
+      "c": "lower()",
+      "d": "title()"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code?\n\nx = (1, 2, 3)\nprint(len(x))",
+    "options": {
+      "a": "0",
+      "b": "1",
+      "c": "2",
+      "d": "3"
+    },
+    "correct_answer": "d",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which method is used to add an item to a Python list?",
+    "options": {
+      "a": "add()",
+      "b": "insert()",
+      "c": "append()",
+      "d": "extend()"
+    },
+    "correct_answer": "c",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the purpose of the 'pass' statement in Python?",
+    "options": {
+      "a": "To indicate an empty block of code",
+      "b": "To handle exceptions and errors",
+      "c": "To import modules",
+      "d": "To define a class"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code snippet?\n\nx = 'Python'\nprint(x[::-1])",
+    "options": {
+      "a": "Python",
+      "b": "nohtyP",
+      "c": "nhoP",
+      "d": "Pyt"
+    },
+    "correct_answer": "b",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which module in Python is used for working with dates and times?",
+    "options": {
+      "a": "datetime",
+      "b": "time",
+      "c": "calendar",
+      "d": "math"
+    },
+    "correct_answer": "a",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code?\n\nx = 'Hello'\nprint(x[-1])",
+    "options": {
+      "a": "H",
+      "b": "o",
+      "c": "e",
+      "d": "l"
+    },
+    "correct_answer": "b",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which keyword is used for defining a function in Python?",
+    "options": {
+      "a": "def",
+      "b": "function",
+      "c": "define",
+      "d": "fun"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code?\n\nx = [1, 2, 3]\ny = x\nx.append(4)\nprint(y)",
+    "options": {
+      "a": "[1, 2, 3]",
+      "b": "[1, 2, 3, 4]",
+      "c": "[4, 3, 2, 1]",
+      "d": "[4, 3, 2, 1, 4]"
+    },
+    "correct_answer": "b",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the purpose of the 'elif' statement in Python?",
+    "options": {
+      "a": "To execute a block of code if the preceding 'if' statement is true",
+      "b": "To handle multiple exceptions in exception handling",
+      "c": "To execute a block of code if none of the preceding conditions are true",
+      "d": "To define a class"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What does the 'self' parameter represent in a Python class method?",
+    "options": {
+      "a": "The object itself",
+      "b": "The class itself",
+      "c": "The parent class",
+      "d": "The child class"
+    },
+    "correct_answer": "a",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code?\n\nx = [1, 2, 3]\nprint(x[3])",
+    "options": {
+      "a": "1",
+      "b": "2",
+      "c": "3",
+      "d": "IndexError"
+    },
+    "correct_answer": "d",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which method is used to remove the last item from a Python list?",
+    "options": {
+      "a": "remove()",
+      "b": "pop()",
+      "c": "delete()",
+      "d": "clear()"
+    },
+    "correct_answer": "b",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the purpose of the 'finally' statement in Python exception handling?",
+    "options": {
+      "a": "To execute a block of code regardless of whether an exception occurs or not",
+      "b": "To handle exceptions and errors",
+      "c": "To execute a block of code repeatedly as long as a condition is true",
+      "d": "To define a class"
+    },
+    "correct_answer": "a",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code snippet?\n\nx = [1, 2, 3]\nx.extend([4, 5])\nprint(x)",
+    "options": {
+      "a": "[1, 2, 3]",
+      "b": "[1, 2, 3, [4, 5]]",
+      "c": "[1, 2, 3, 4, 5]",
+      "d": "[1, 2, 3, 5, 4]"
+    },
+    "correct_answer": "c",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the purpose of the 'break' statement in a loop in Python?",
+    "options": {
+      "a": "To exit the loop prematurely",
+      "b": "To skip the current iteration and continue with the next iteration",
+      "c": "To indicate an empty block of code",
+      "d": "To define a class"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code?\n\nx = 'Hello'\nprint(x[1:3])",
+    "options": {
+      "a": "H",
+      "b": "e",
+      "c": "el",
+      "d": "ell"
+    },
+    "correct_answer": "c",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which module in Python is used for mathematical operations?",
+    "options": {
+      "a": "math",
+      "b": "cmath",
+      "c": "maths",
+      "d": "calc"
+    },
+    "correct_answer": "a",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code?\n\nx = 'Hello'\nprint(x[-2:])",
+    "options": {
+      "a": "H",
+      "b": "o",
+      "c": "lo",
+      "d": "llo"
+    },
+    "correct_answer": "c",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which keyword is used to exit from a loop in Python?",
+    "options": {
+      "a": "break",
+      "b": "exit",
+      "c": "stop",
+      "d": "quit"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the purpose of the 'super()' function in Python?",
+    "options": {
+      "a": "To call a method from the parent class",
+      "b": "To create a new instance of a class",
+      "c": "To convert a string to uppercase",
+      "d": "To define a class"
+    },
+    "correct_answer": "a",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What does the 'import' keyword do in Python?",
+    "options": {
+      "a": "It allows you to access modules and their functions",
+      "b": "It defines a new class",
+      "c": "It executes a block of code repeatedly as long as a condition is true",
+      "d": "It handles exceptions and errors"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code snippet?\n\nx = 10\ny = 5\nif x > y:\n    print('x is greater than y')\nelse:\n    print('x is not greater than y')",
+    "options": {
+      "a": "x is greater than y",
+      "b": "x is not greater than y",
+      "c": "x",
+      "d": "y"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "Which of the following is used to get user input in Python?",
+    "options": {
+      "a": "input()",
+      "b": "get()",
+      "c": "read()",
+      "d": "scan()"
+    },
+    "correct_answer": "a",
+    "difficulty": "Easy",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  },
+  {
+    "question": "What is the output of the following code?\n\nx = [1, 2, 3]\ny = x\nx.append(4)\nprint(y)",
+    "options": {
+      "a": "[1, 2, 3]",
+      "b": "[1, 2, 3, 4]",
+      "c": "[4, 3, 2, 1]",
+      "d": "[4, 3, 2, 1, 4]"
+    },
+    "correct_answer": "b",
+    "difficulty": "Medium",
+    "topics": [
+      "Python",
+      "Programming"
+    ]
+  }
+]
