@@ -7,4 +7,4 @@ target.zip
 configuration.env
 gandalf_update.ps1
 
-json/
+/json
