@@ -340,7 +340,7 @@ public class TriviaRepository {
 
             ranks.put("**Global rank**", findUserPosition(globalRankList, userId));
 
-            if (roles.stream().anyMatch(r -> r.contains("JAVA"))) {
+            if (roles.stream().anyMatch(r -> r.contains("JAVA STUDENT"))) {
                 ranks.put("Java rank", findUserPosition(javaRankList, userId));
             }
             if (roles.stream().anyMatch(r -> r.contains("PYTHON"))) {
