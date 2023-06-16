@@ -7,7 +7,6 @@ import com.mandarin.discord.entity.TriviaUserInfo;
 import com.mandarin.discord.json.TriviaQuestionInsertCommand;
 
 import java.sql.*;
-import java.sql.Date;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -21,7 +20,9 @@ public class TriviaRepository {
 
             PreparedStatement statement = connection.prepareStatement("""
                     SELECT * FROM gandalf.trivia_questions
-                    WHERE `complexity` = ? AND `group` = ?
+                    WHERE `complexity` = ? 
+                    AND `group` = ?
+                    AND `id` NOT IN (SELECT `used_questions`.`question_id` FROM `used_questions`)
                     ORDER BY RAND()
                     LIMIT 1
                       """);
@@ -30,7 +31,10 @@ public class TriviaRepository {
             statement.setString(2, group);
 
             ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
+
+            if (!resultSet.next()) {
+                return TriviaQuestion.builder().title("MISSING_QUESTION_TITLE").build();
+            }
 
             TriviaQuestion triviaQuestion = TriviaQuestion.builder()
                     .id(UUID.fromString(resultSet.getString("id")))
@@ -48,6 +52,8 @@ public class TriviaRepository {
                     .complexity(TriviaQuestion.Complexity.valueOf(resultSet.getString("complexity").toUpperCase()))
                     .build();
 
+            insertUsedQuestion(connection, triviaQuestion);
+
             connection.close();
             return triviaQuestion;
         } catch (SQLException e) {
@@ -55,7 +61,20 @@ public class TriviaRepository {
         }
     }
 
-    public TriviaAnswer getUserAnswer(String userId, String questionId) {
+    private void insertUsedQuestion(Connection connection, TriviaQuestion triviaQuestion) throws SQLException {
+
+        PreparedStatement insertStatement = connection.prepareStatement("""
+                INSERT INTO gandalf.used_questions(`question_id`, `used_on`)
+                VALUES (?, ?);
+                """);
+
+        insertStatement.setString(1, triviaQuestion.getId().toString());
+        insertStatement.setTimestamp(2, Timestamp.valueOf(OffsetDateTime.now().toLocalDateTime()));
+
+        insertStatement.executeUpdate();
+    }
+
+    public TriviaAnswer findUserAnswer(String userId, String questionId) {
 
         try {
             Connection connection = JdbcConnection.getConnection();
@@ -143,7 +162,7 @@ public class TriviaRepository {
         }
     }
 
-    public TriviaUserInfo getUserPoints(String userId) {
+    public TriviaUserInfo findUserPoints(String userId) {
 
         try {
             Connection connection = JdbcConnection.getConnection();
@@ -182,7 +201,7 @@ public class TriviaRepository {
         }
     }
 
-    public Set<String> getGlobalRankList() {
+    public Set<String> findGlobalRankList() {
 
         try {
             Connection connection = JdbcConnection.getConnection();
@@ -191,12 +210,13 @@ public class TriviaRepository {
                     SELECT SUM(`ta`.`points`) AS 'points',
                            COUNT(*)           AS 'answered_questions',
                            SUM(`correctness`) AS 'correct_answers',
-                           `user_id`          AS 'user_id'
+                           `user_id`          AS 'user_id',
+                            SUM(`ta`.`created_on`) AS `created_on_date`
                     FROM `gandalf`.`trivia_questions` AS `tq`
                              LEFT JOIN `gandalf`.`trivia_answers` `ta` ON `ta`.`question_id` = `tq`.`id`
                     WHERE `user_id` IS NOT NULL
                     GROUP BY `ta`.`user_id`
-                    ORDER BY `points` DESC, `correct_answers` DESC, `answered_questions` DESC, `user_id` DESC
+                    ORDER BY `points` DESC, `correct_answers` DESC, `answered_questions` DESC, `created_on_date`
                     LIMIT 10;
                     """);
 
@@ -218,74 +238,67 @@ public class TriviaRepository {
         }
     }
 
-    public List<Set<String>> getGroupRankList() {
+    public Set<String> findGroupRankList(String groupFlag) {
 
         try {
             Connection connection = JdbcConnection.getConnection();
 
             PreparedStatement groupRankingQuery = connection.prepareStatement("""
-                    SELECT `tq`.`group`         AS 'group',
-                           SUM(`ta`.`points`)   AS 'points',
-                           COUNT(*)             AS 'answered_questions',
+                    SELECT `tq`.`group`           AS 'group',
+                           SUM(`ta`.`points`)     AS 'points',
+                           COUNT(*)               AS 'answered_questions',
                            (SELECT SUM(`tagp`.`points`)
                             FROM `gandalf`.`trivia_answers` AS `tagp`
                             WHERE `tagp`.`user_id` = `ta`.`user_id`
-                            GROUP BY `user_id`) AS `total_points`,
-                           SUM(`correctness`)   AS 'correct_answers',
-                           `user_id`            AS 'user_id'
+                            GROUP BY `user_id`)   AS `total_points`,
+                           SUM(`correctness`)     AS 'correct_answers',
+                           `user_id`              AS 'user_id',
+                           SUM(`ta`.`created_on`) AS `created_on_date`
                     FROM `gandalf`.`trivia_questions` AS `tq`
                              LEFT JOIN `gandalf`.`trivia_answers` `ta` ON `ta`.`question_id` = `tq`.`id`
                     WHERE `user_id` IS NOT NULL
+                      AND `group` = ?
                     GROUP BY `tq`.`group`, `ta`.`user_id`
-                    ORDER BY `points` DESC, `correct_answers` DESC, `answered_questions` DESC, `total_points` DESC, `user_id` DESC;                                                                   
+                    ORDER BY `points` DESC, `correct_answers` DESC, `answered_questions` DESC, `created_on_date`;                                                                  
                       """);
+
+            groupRankingQuery.setString(1, groupFlag);
 
             ResultSet resultSetForGroupRanking = groupRankingQuery.executeQuery();
 
-            Set<String> javaRankList = new LinkedHashSet<>();
-            Set<String> pythonRankList = new LinkedHashSet<>();
-            Set<String> cSharpRankList = new LinkedHashSet<>();
-            Set<String> jsRankList = new LinkedHashSet<>();
+            Set<String> groupRankList = new LinkedHashSet<>();
 
             while (resultSetForGroupRanking.next()) {
 
                 String currentUserId = resultSetForGroupRanking.getString(6);
                 int points = resultSetForGroupRanking.getInt(2);
-                String group = resultSetForGroupRanking.getString(1);
 
-                switch (group) {
-                    case "java" -> javaRankList.add(currentUserId + "$" + points);
-                    case "c#" -> cSharpRankList.add(currentUserId + "$" + points);
-                    case "python" -> pythonRankList.add(currentUserId + "$" + points);
-                    case "js" -> jsRankList.add(currentUserId + "$" + points);
-                    default -> throw new RuntimeException("Trivia answer given with unsupported group!" +
-                            " Can't make the ranking! Given group: " + group);
-                }
+                groupRankList.add(currentUserId + "$" + points);
             }
 
             connection.close();
 
-            return List.of(javaRankList, pythonRankList, cSharpRankList, jsRankList);
+            return groupRankList;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public Map<String, String> getUserRank(String userId, List<String> roles) {
+    public Map<String, String> findUserRank(String userId, List<String> roles) {
 
         try {
             Connection connection = JdbcConnection.getConnection();
 
             PreparedStatement globalRankingQuery = connection.prepareStatement("""
-                    SELECT SUM(`ta`.`points`) AS 'points',
-                           COUNT(*)           AS 'answered_questions',
-                           SUM(`correctness`) AS 'correct_answers',
-                           `user_id`          AS 'user_id'
+                    SELECT SUM(`ta`.`points`)     AS 'points',
+                           COUNT(*)               AS 'answered_questions',
+                           SUM(`correctness`)     AS 'correct_answers',
+                           `user_id`              AS 'user_id',
+                           SUM(`ta`.`created_on`) AS `created_on_date`
                     FROM `gandalf`.`trivia_questions` AS `tq`
-                             LEFT JOIN `gandalf`.`trivia_answers` `ta` ON `ta`.`question_id` = `tq`.`id`
-                    WHERE `user_id` IS NOT NULL
+                             RIGHT JOIN `gandalf`.`trivia_answers` `ta` ON `ta`.`question_id` = `tq`.`id`
                     GROUP BY `ta`.`user_id`
-                    ORDER BY `points` DESC, `correct_answers` DESC, `answered_questions` DESC, `user_id` DESC;
+                    ORDER BY `points` DESC, `correct_answers` DESC, `answered_questions` DESC, `user_id` DESC, `created_on_date`;
                     """);
 
             PreparedStatement groupRankingQuery = connection.prepareStatement("""
@@ -297,18 +310,17 @@ public class TriviaRepository {
                             WHERE `tagp`.`user_id` = `ta`.`user_id`
                             GROUP BY `user_id`) AS `total_points`,
                            SUM(`correctness`)   AS 'correct_answers',
-                           `user_id`            AS 'user_id'
+                           `user_id`            AS 'user_id',
+                           SUM(`ta`.`created_on`) AS `created_on_date`
                     FROM `gandalf`.`trivia_questions` AS `tq`
                              LEFT JOIN `gandalf`.`trivia_answers` `ta` ON `ta`.`question_id` = `tq`.`id`
                     WHERE `user_id` IS NOT NULL
                     GROUP BY `tq`.`group`, `ta`.`user_id`
-                    ORDER BY `points` DESC, `correct_answers` DESC, `answered_questions` DESC, `total_points` DESC, `user_id` DESC;                                                                   
+                    ORDER BY `points` DESC, `correct_answers` DESC, `answered_questions` DESC, `created_on_date`;                                                                 
                       """);
-
 
             ResultSet resultSetForGlobalRanking = globalRankingQuery.executeQuery();
             ResultSet resultSetForGroupRanking = groupRankingQuery.executeQuery();
-
 
             Set<String> globalRankList = new LinkedHashSet<>();
             Set<String> javaRankList = new LinkedHashSet<>();
@@ -420,7 +432,7 @@ public class TriviaRepository {
         };
     }
 
-    public void insertQuestion(List<TriviaQuestionInsertCommand> uniqueQuestions) {
+    public void insertQuestion(List<TriviaQuestionInsertCommand> uniqueQuestions, String lang) {
 
         try {
 
@@ -436,17 +448,17 @@ public class TriviaRepository {
 
                 statement.setString(1, UUID.randomUUID().toString());
                 statement.setString(2, questionCommand.getQuestion());
-                statement.setInt(3, random.nextInt(5, 16));
+                statement.setInt(3, random.nextInt(20, 35));
                 statement.setString(4, questionCommand.getOptions().get("a"));
                 statement.setString(5, questionCommand.getOptions().get("c"));
                 statement.setString(6, questionCommand.getOptions().get("b"));
                 statement.setString(7, questionCommand.getOptions().get("d"));
                 statement.setString(8, questionCommand.getCorrect_answer());
                 statement.setTimestamp(9, Timestamp.valueOf(OffsetDateTime.now().toLocalDateTime()));
-                statement.setString(10, "ceo");
+                statement.setString(10, "Floyd");
                 statement.setString(11, "unknown");
-                statement.setString(12, "easy");
-                statement.setString(13, "c#");
+                statement.setString(12, "medium");
+                statement.setString(13, lang);
 
                 statement.addBatch();
             }

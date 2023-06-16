@@ -4,7 +4,7 @@ import com.mandarin.discord.command.*;
 import com.mandarin.discord.command.status.GuildMemberRemoveToggle;
 import com.mandarin.discord.config.GuildStartupConfiguration;
 import com.mandarin.discord.json.ReadJsonCommand;
-import com.mandarin.discord.scheduler.ExamStatusScheduler;
+import com.mandarin.discord.scheduler.*;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.util.List;
@@ -18,10 +18,16 @@ public class EventListenerRegistry {
             new GuildMemberRemovedEventListener(),
             //schedulers
             new ExamStatusScheduler(),
+            new JavaRankListScheduler(),
+            new CSharpRankListScheduler(),
+            new JavaScriptRankListScheduler(),
+            new PythonRankListScheduler(),
+            new GlobalRankListScheduler(),
             //commands
             new TriviaTriggerCommand(),
             new TriviaPointsCheckoutCommand(),
             new TriviaRankListCommand(),
+            new LatestUpdateCommand(),
             new GuildMemberRemoveToggle(),
             new ExamInsertCommand(),
             new ExamNotificationCommand(),

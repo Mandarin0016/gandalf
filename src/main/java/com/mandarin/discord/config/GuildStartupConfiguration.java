@@ -24,16 +24,23 @@ public class GuildStartupConfiguration extends ListenerAdapter {
         List<CommandData> commandData = new ArrayList<>();
         SlashCommandData triviaRankList = new CommandDataImpl("rank-list", "Retrieve rank-list with the given flag: global, java, c#, python, js");
         triviaRankList.addOption(OptionType.STRING, "flag", "global, java, c#, python, js", true);
+        SlashCommandData latestUpdateCommand = new CommandDataImpl("latest-update-notify", "Notify the latest update.");
+        latestUpdateCommand.addOption(OptionType.STRING, "version", "The version for which the update notification will be.");
+        latestUpdateCommand.addOption(OptionType.STRING, "details", "Any additional details, if you have.");
         SlashCommandData triviaStartCommand = new CommandDataImpl("trivia-start", "Start a trivia challenge now!");
-        triviaStartCommand.addOption(OptionType.STRING, "group", "The group to which you start the trivia for. Could be java, js, python or c#", true);
-        triviaStartCommand.addOption(OptionType.STRING, "complexity", "The complexity of the question: easy, normal or hard", true);
+        triviaStartCommand.addOption(OptionType.STRING, "group", "The group you start the trivia for. Possibility: java, js, python or c#", true);
+        triviaStartCommand.addOption(OptionType.STRING, "complexity", "The complexity of the questions. Possibility: easy, medium or hard", true);
+        triviaStartCommand.addOption(OptionType.INTEGER, "count", "Hay many questions you want that trivia to has. Possibility: 1-10", true);
         commandData.add(triviaStartCommand);
+        commandData.add(latestUpdateCommand);
         commandData.add(triviaRankList);
         if (isProdLoaded()) {
             SlashCommandData triviaMyPoints = new CommandDataImpl("points", "Check your trivia points.");
             commandData.add(triviaMyPoints);
         }
         SlashCommandData jsonRead = new CommandDataImpl("json-read", "Only for internal use.");
+        jsonRead.addOption(OptionType.STRING, "lang", "lang: js, c#, js, python");
+        jsonRead.addOption(OptionType.STRING, "version", "version: 1+");
         commandData.add(jsonRead);
         SlashCommandData loggingMemberRemovalCommand = new CommandDataImpl("logging-member-removal", "Enable/Disable the logging for member removal event occurrence.");
         loggingMemberRemovalCommand.addOption(OptionType.STRING, "status", "The status to move on.", true);

@@ -33,9 +33,10 @@ public class ApplicationConfiguration {
             token = config.get("TOKEN");
         }
 
+        String version = config.get("VERSION");
         DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(token);
         builder.setStatus(OnlineStatus.ONLINE);
-        builder.setActivity(Activity.watching("for challenge!"));
+        builder.setActivity(Activity.competing("Version: " + version));
         builder.enableIntents(
                 GatewayIntent.GUILD_MEMBERS,
                 GatewayIntent.GUILD_PRESENCES,

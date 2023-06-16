@@ -4,6 +4,7 @@ import com.mandarin.discord.entity.TriviaAnswer;
 import com.mandarin.discord.entity.TriviaQuestion;
 import com.mandarin.discord.enums.GuildRole;
 import com.mandarin.discord.repository.TriviaRepository;
+import com.mandarin.discord.util.MessageUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -11,11 +12,18 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 
 import java.awt.*;
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.mandarin.discord.config.GuildStartupConfiguration.*;
 import static com.mandarin.discord.util.ButtonIdentifier.TRIVIA_ANSWER_BUTTON;
@@ -61,39 +69,108 @@ public class TriviaTriggerCommand extends ListenerAdapter {
 
         String group = Objects.requireNonNull(event.getOption("group")).getAsString();
         String complexity = Objects.requireNonNull(event.getOption("complexity")).getAsString().toUpperCase();
+        int count = Objects.requireNonNull(event.getOption("count")).getAsInt();
 
-        if (!isValidGroup(group) || !isValidComplexity(complexity)) {
+        if (!isValidGroup(group) || !isValidComplexity(complexity) || !isValidCount(count)) {
             event.reply("Invalid data provided! Check carefully the group and the complexity!").setEphemeral(true).queue();
             return;
         }
 
-        TriviaQuestion triviaQuestion = triviaRepository.findRandomQuestion(group, TriviaQuestion.Complexity.valueOf(complexity));
+        event.reply(MessageCreateData.fromEmbeds(MessageUtil.generateSuccessResponseEmbed("Trivia" + " for **" + group.toUpperCase() + "** " + "has scheduled successfully and starting in **30** seconds! \n Number of questions: **" + count + "** \n Complexity: **" + complexity.toUpperCase() + "** \nQuestion generation starting soon!", event.getMember().getEffectiveName()))).queue();
 
-        EmbedBuilder builder = new EmbedBuilder();
-        builder.setTitle(triviaQuestion.getTitle());
-        builder.setColor(findComplexityColor(triviaQuestion.getComplexity()));
-        builder.setThumbnail("https://www.cumberlandforest.com/backwoods/wp-content/uploads/2021/03/trivia-night.jpg");
-        builder.setDescription("Точки: **" + triviaQuestion.getPoints() + "**");
-        builder.addField("А:", triviaQuestion.getAnswerA(), false);
-        builder.addField("B:", triviaQuestion.getAnswerB(), false);
-        builder.addField("C:", triviaQuestion.getAnswerC(), false);
-        builder.addField("D:", triviaQuestion.getAnswerD(), false);
-        builder.setFooter("Група: " + triviaQuestion.getGroup() + " | Сложност: " + findComplexityDisplayName(triviaQuestion.getComplexity()), findFooterIcon(group));
-        builder.setTimestamp(Instant.now());
+        triggerNewTrivia(event, guild, group, complexity, count);
+    }
 
-        MessageEmbed embed = builder.build();
+    private boolean isValidCount(int count) {
+        return count >= 1 && count <= 10;
+    }
 
-        Button buttonA = Button.primary(triviaQuestion.getId().toString() + "$" + TRIVIA_ANSWER_BUTTON + "$" + "A$" + triviaQuestion.getCorrectAnswer() + "$" + triviaQuestion.getPoints(), "A");
-        Button buttonB = Button.primary(triviaQuestion.getId().toString() + "$" + TRIVIA_ANSWER_BUTTON + "$" + "B$" + triviaQuestion.getCorrectAnswer() + "$" + triviaQuestion.getPoints(), "B");
-        Button buttonC = Button.primary(triviaQuestion.getId().toString() + "$" + TRIVIA_ANSWER_BUTTON + "$" + "C$" + triviaQuestion.getCorrectAnswer() + "$" + triviaQuestion.getPoints(), "C");
-        Button buttonD = Button.primary(triviaQuestion.getId().toString() + "$" + TRIVIA_ANSWER_BUTTON + "$" + "D$" + triviaQuestion.getCorrectAnswer() + "$" + triviaQuestion.getPoints(), "D");
+    private void triggerNewTrivia(SlashCommandInteractionEvent event, Guild guild, String group, String complexity, int questionsCount) {
 
-        guild.getTextChannelById(findAppropriateChannel(guild.getId(), event.getOption("group").getAsString()))
-                .sendMessageEmbeds(embed)
-                .setActionRow(buttonA, buttonB, buttonC, buttonD)
-                .queue();
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        AtomicInteger messageCounter = new AtomicInteger(1);
+        //  AtomicReference<String> messageId = new AtomicReference<>();
+        String channelId = findAppropriateChannel(guild.getId(), event.getOption("group").getAsString());
 
-        event.reply("Trivia" + " **" + group.toLowerCase() + "** " + "has started!").setEphemeral(true).queue();
+        scheduler.scheduleAtFixedRate(() -> {
+
+            if (messageCounter.get() > questionsCount) {
+                //  guild.getTextChannelById(channelId).deleteMessageById(messageId.get()).queue();
+                event.getChannel().sendMessage(MessageCreateData.fromEmbeds(MessageUtil.generateSuccessResponseEmbed("All questions were sent successfully for given flags **" + group.toUpperCase() + "**, **" + complexity.toUpperCase() + "**", event.getMember().getEffectiveName()))).queue();
+                scheduler.shutdown();
+                return;
+            }
+
+            //  if (messageId.get() != null) {
+            //      guild.getTextChannelById(channelId).deleteMessageById(messageId.get()).queue();
+            //  }
+
+            TriviaQuestion triviaQuestion = triviaRepository.findRandomQuestion(group, TriviaQuestion.Complexity.valueOf(complexity));
+
+            if (triviaQuestion.getTitle().equals("MISSING_QUESTION_TITLE")) {
+                event.getChannel().sendMessage(MessageCreateData.fromEmbeds(MessageUtil.generateFailureResponseEmbed("No more questions available in the Database with flags **" + group.toUpperCase() + "**, **" + complexity.toUpperCase() + "**", event.getMember().getEffectiveName()))).queue();
+                scheduler.shutdown();
+                return;
+            } else {
+
+                EmbedBuilder builder = new EmbedBuilder();
+                builder.setTitle(triviaQuestion.getTitle());
+                builder.setColor(findComplexityColor(triviaQuestion.getComplexity()));
+                builder.setThumbnail(findThumbnailUrl(messageCounter.get(), complexity));
+                builder.setDescription("Точки: **" + triviaQuestion.getPoints() + "**");
+                builder.addField("А:", triviaQuestion.getAnswerA(), false);
+                builder.addField("B:", triviaQuestion.getAnswerB(), false);
+                builder.addField("C:", triviaQuestion.getAnswerC(), false);
+                builder.addField("D:", triviaQuestion.getAnswerD(), false);
+                builder.setFooter("Група: " + triviaQuestion.getGroup() + " | Сложност: " + findComplexityDisplayName(triviaQuestion.getComplexity()), findFooterIcon(group));
+                builder.setTimestamp(Instant.now());
+
+                MessageEmbed embed = builder.build();
+
+                Button buttonA = Button.primary(triviaQuestion.getId().toString() + "$" + TRIVIA_ANSWER_BUTTON + "$" + "A$" + triviaQuestion.getCorrectAnswer() + "$" + triviaQuestion.getPoints(), "A");
+                Button buttonB = Button.primary(triviaQuestion.getId().toString() + "$" + TRIVIA_ANSWER_BUTTON + "$" + "B$" + triviaQuestion.getCorrectAnswer() + "$" + triviaQuestion.getPoints(), "B");
+                Button buttonC = Button.primary(triviaQuestion.getId().toString() + "$" + TRIVIA_ANSWER_BUTTON + "$" + "C$" + triviaQuestion.getCorrectAnswer() + "$" + triviaQuestion.getPoints(), "C");
+                Button buttonD = Button.primary(triviaQuestion.getId().toString() + "$" + TRIVIA_ANSWER_BUTTON + "$" + "D$" + triviaQuestion.getCorrectAnswer() + "$" + triviaQuestion.getPoints(), "D");
+
+                guild.getTextChannelById(channelId)
+                        .sendMessageEmbeds(embed)
+                        .setActionRow(buttonA, buttonB, buttonC, buttonD)
+                        .queue();
+                //  .queue(sentMessage -> messageId.set(sentMessage.getId()));
+            }
+
+            messageCounter.getAndIncrement();
+        }, 30, 3, TimeUnit.SECONDS);
+    }
+
+    private String findThumbnailUrl(int i, String complexity) {
+
+        if (complexity.equalsIgnoreCase("medium")) {
+
+            return switch (i) {
+                case 1 -> "https://i.ibb.co/kQFvNMH/one-medium.png";
+                case 2 -> "https://i.ibb.co/PWRF9Kt/two-medium.png";
+                case 3 -> "https://i.ibb.co/JqqQnQ3/three-medium.png";
+                case 4 -> "https://i.ibb.co/R39NVvw/four-medium.png";
+                case 5 -> "https://i.ibb.co/kh8tQR3/five-medium.png";
+                default -> "";
+            };
+        } else {
+
+            return switch (i) {
+                case 1 -> "https://i.ibb.co/J5VzXGk/one.png";
+                case 2 -> "https://i.ibb.co/VBRScXH/two.png";
+                case 3 -> "https://i.ibb.co/2hX0jfn/three.png";
+                case 4 -> "https://i.ibb.co/ns1HpHx/four.png";
+                case 5 -> "https://i.ibb.co/BLf5ppZ/five.png";
+                case 6 -> "https://i.ibb.co/stCQt80/six.png";
+                case 7 -> "https://i.ibb.co/qRsk9y8/seven.png";
+                case 8 -> "https://i.ibb.co/BBcGq9M/eight.png";
+                case 9 -> "https://i.ibb.co/N91wZdF/nine.png";
+                case 10 -> "https://i.ibb.co/B4NLyz3/ten.png";
+                default -> "";
+            };
+        }
     }
 
     @Override
@@ -108,11 +185,10 @@ public class TriviaTriggerCommand extends ListenerAdapter {
         String questionId = buttonId.split("\\$")[0];
 
         if (triviaRepository.doesUserHasAnswer(userId, questionId)) {
-            TriviaAnswer answer = triviaRepository.getUserAnswer(userId, questionId);
-            event.reply("Не може да отговаряте повече от веднъж! Отговора, който вече изпратихте е: \"" + answer.getUserAnswer().toUpperCase() + "\" | Изпратен на: " + answer.getCreatedOn().toString()).setEphemeral(true).queue();
+            TriviaAnswer answer = triviaRepository.findUserAnswer(userId, questionId);
+            String dateFormatted = answer.getCreatedOn().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM));
+            event.reply("Не може да отговаряте повече от веднъж! Отговора, който вече изпратихте е: \"" + answer.getUserAnswer().toUpperCase() + "\" | Изпратен на: " + dateFormatted).setEphemeral(true).queue();
             return;
-        } else {
-            event.reply("Вие отговорихте успешно на въпроса!").setEphemeral(true).queue();
         }
 
         String buttonLabel = event.getButton().getLabel().toLowerCase();
@@ -120,8 +196,10 @@ public class TriviaTriggerCommand extends ListenerAdapter {
         int points = Integer.parseInt(buttonId.split("\\$")[4]);
 
         if (buttonLabel.equalsIgnoreCase(correctAnswer)) {
+            event.reply("<:1760checkmarkicon:1018435285786308658> Получихме вашия отговор и той е **правилен!** :tada:").setEphemeral(true).queue();
             triviaRepository.insertAnswer(userId, buttonId, buttonLabel, true, points);
         } else {
+            event.reply("<:5060crossmarkicon:1018435287828942899> Получихме вашия отговор, но той е **грешен!** :pleading_face:").setEphemeral(true).queue();
             triviaRepository.insertAnswer(userId, buttonId, buttonLabel, false, 0);
         }
 
@@ -143,7 +221,7 @@ public class TriviaTriggerCommand extends ListenerAdapter {
 
         return switch (complexity) {
             case EASY -> new Color(86, 196, 62);
-            case NORMAL -> new Color(70, 188, 217);
+            case MEDIUM -> new Color(70, 188, 217);
             case HARD -> new Color(227, 117, 46);
         };
     }
@@ -159,7 +237,7 @@ public class TriviaTriggerCommand extends ListenerAdapter {
     private boolean isValidComplexity(String complexity) {
 
         return switch (complexity) {
-            case "EASY", "NORMAL", "HARD" -> true;
+            case "EASY", "MEDIUM", "HARD" -> true;
             default -> false;
         };
     }
@@ -190,7 +268,7 @@ public class TriviaTriggerCommand extends ListenerAdapter {
 
         return switch (complexity) {
             case EASY -> "Лесна";
-            case NORMAL -> "Нормална";
+            case MEDIUM -> "Средна";
             case HARD -> "Трудна";
         };
     }

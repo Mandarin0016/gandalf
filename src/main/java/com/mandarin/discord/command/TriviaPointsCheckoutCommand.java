@@ -46,15 +46,15 @@ public class TriviaPointsCheckoutCommand extends ListenerAdapter {
 
         String userId = event.getMember().getId();
 
-        TriviaUserInfo userInfo = triviaRepository.getUserPoints(userId);
-        Map<String, String> ranks = triviaRepository.getUserRank(userId, event.getMember().getRoles().stream().map(Role::getName).map(String::toUpperCase).collect(Collectors.toList()));
+        TriviaUserInfo userInfo = triviaRepository.findUserPoints(userId);
+        Map<String, String> ranks = triviaRepository.findUserRank(userId, event.getMember().getRoles().stream().map(Role::getName).map(String::toUpperCase).collect(Collectors.toList()));
 
         Integer collectedPoints = userInfo.getGroupPoints().values().stream().mapToInt(Integer::intValue).sum();
         Integer answeredQuestionsCount = userInfo.getAnsweredQuestions().values().stream().mapToInt(Integer::intValue).sum();
         Integer correctAnswersCount = userInfo.getCorrectAnswers().values().stream().mapToInt(Integer::intValue).sum();
 
         EmbedBuilder builder = new EmbedBuilder();
-        builder.setTitle("Здравей :wave:, това са твойте резултати:");
+        builder.setTitle("Здравей :wave:, това са твоите резултати:");
         builder.setDescription(String.format(
                 "*Събрани точки:* **%d**%n*Отговорени въпроси:* **%d**%n*Верни отговори:* **%d**%n",
                 collectedPoints, answeredQuestionsCount, correctAnswersCount));

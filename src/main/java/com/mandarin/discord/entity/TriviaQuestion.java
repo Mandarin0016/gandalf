@@ -27,7 +27,7 @@ public class TriviaQuestion {
 
     public enum Complexity {
         EASY,
-        NORMAL,
+        MEDIUM,
         HARD
     }
 
